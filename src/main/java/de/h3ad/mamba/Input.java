@@ -8,10 +8,11 @@ import javafx.scene.input.KeyEvent;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Input {
 
-    Set<KeyCode> pressedKeys = (HashSet<KeyCode>) Collections.synchronizedCollection(new HashSet<KeyCode>());
+    Set<KeyCode> pressedKeys = ConcurrentHashMap.newKeySet();
 
     public Input(Game game, Scene scene) {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {

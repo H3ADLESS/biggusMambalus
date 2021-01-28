@@ -2,11 +2,11 @@ package de.h3ad.mamba.gameobjects;
 
 import de.h3ad.mamba.Game;
 import de.h3ad.mamba.GameObject;
-import de.h3ad.mamba.math.Vector2;
+import de.h3ad.mamba.math.Vector3;
 
 public class Spider extends GameObject {
 
-    private Vector2 direction;
+    private Vector3 direction;
 
     public Spider() {
         super();

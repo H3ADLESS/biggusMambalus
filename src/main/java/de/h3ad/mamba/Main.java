@@ -37,7 +37,7 @@ public class Main extends Application {
 //        gc.moveTo(110,100);
         gc.strokeLine(110, 110, 120, 120);
 
-        Game g = Game.init(gc);
+        Game g = Game.init(scene, gc);
         new Board();
         new Spider();
         g.start();

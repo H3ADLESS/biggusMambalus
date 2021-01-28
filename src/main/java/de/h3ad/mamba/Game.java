@@ -1,6 +1,6 @@
 package de.h3ad.mamba;
 
-import javafx.scene.canvas.Canvas;
+import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.ArrayList;
@@ -13,10 +13,14 @@ public class Game {
     boolean running = false;
     List<GameObject> gameObjects = new ArrayList<>();
     GraphicsContext graphicsContext;
+    Scene scene;
+    Input input;
     double lastTime = System.nanoTime() / 1000000000.0;
 
-    private Game(GraphicsContext graphicsContext) {
+    private Game(Scene scene, GraphicsContext graphicsContext) {
+        this.scene = scene;
         this.graphicsContext = graphicsContext;
+        this.input = new Input(this, scene);
     }
 
     public void start() {
@@ -28,9 +32,9 @@ public class Game {
         this.running = false;
     }
 
-    public static Game init(GraphicsContext graphicsContext) {
+    public static Game init(Scene scene, GraphicsContext graphicsContext) {
         if (GAME == null) {
-            GAME = new Game(graphicsContext);
+            GAME = new Game(scene, graphicsContext);
         }
         return GAME;
     }

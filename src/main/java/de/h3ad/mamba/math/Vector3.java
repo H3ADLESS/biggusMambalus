@@ -7,6 +7,10 @@ public class Vector3 {
     public final static Vector3 UP = new Vector3(0, 1);
     public final static Vector3 DOWN = new Vector3(0, -1);
 
+    public double x = 0;
+    public double y = 0;
+    public double z = 0;
+
     public Vector3() {
 
     }
@@ -14,6 +18,7 @@ public class Vector3 {
     public Vector3(double x, double y) {
         this.x = x;
         this.y = y;
+        this.z = 0;
     }
 
     public Vector3(double x, double y, double z) {
@@ -22,8 +27,6 @@ public class Vector3 {
         this.z = z;
     }
 
-    public double x = 0;
-    public double y = 0;
-    public double z = 0;
+
 
 }

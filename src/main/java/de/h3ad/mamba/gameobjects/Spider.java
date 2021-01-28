@@ -16,9 +16,6 @@ public class Spider extends GameObject {
         this.position.x += (100 * deltaTime);
         if (this.position.x > 800.0) this.position.x = 0;
         System.out.println(this.position.x);
-
-
-
     }
 
     public void draw() {

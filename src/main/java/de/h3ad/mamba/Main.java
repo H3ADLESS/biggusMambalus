@@ -28,7 +28,7 @@ public class Main extends Application {
         Scene scene = new Scene(group);
         stage.setScene(scene);
 
-        stage.setTitle("Norman ist blöd und passt nie auf!!!");
+        stage.setTitle("Norman ist doof und passt nie auf!!!");
 
 
         gc.setFill(Color.BLACK);

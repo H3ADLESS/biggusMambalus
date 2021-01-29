@@ -1,5 +1,7 @@
 package de.h3ad.mamba.math;
 
+import java.util.Objects;
+
 public class Vector3 {
 
     public final static Vector3 LEFT = new Vector3(-1, 0);
@@ -27,6 +29,20 @@ public class Vector3 {
         this.z = z;
     }
 
+    @Override
+    public boolean equals(final Object o) {
+        if (o instanceof Vector3) {
+            var other = (Vector3) o;
+            return Objects.equals(x, other.x)
+                    && Objects.equals(y, other.y)
+                    && Objects.equals(z, other.z);
+        }
 
+        return false;
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y, z);
+    }
 }

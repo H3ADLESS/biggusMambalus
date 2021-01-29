@@ -2,6 +2,7 @@
 We want to learn rebuild and improve the base game.
 
 ## How to  run the game:
+chmod +x gradlew  
 ./gradlew run
 
 ## Open ToDo's (open for discussion or feedback) 

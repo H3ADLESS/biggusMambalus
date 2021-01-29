@@ -43,7 +43,7 @@ public class Spider extends GameObject {
     }
 
     public void draw() {
-        getGraphics().fillOval(position.getX() - (spiderWidth/2.0), position.getY() - (spiderWidth/2.0), SPIDER_WIDTH, SPIDER_WIDTH);
+        getGraphics().fillOval(position.getX() - (spiderWidth/2.0), position.getY() - (spiderHeight/2.0), SPIDER_WIDTH, SPIDER_WIDTH);
         SpiderPath.SpiderPathArray path = spiderPath.getSpiderPathArray();
         if (path.size() > 0) {
             getGraphics().setStroke(Color.GRAY);

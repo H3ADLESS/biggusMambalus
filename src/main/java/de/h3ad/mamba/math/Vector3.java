@@ -4,17 +4,14 @@ import java.util.Objects;
 
 public class Vector3 {
 
-    public final static Vector3 LEFT = new Vector3(-1, 0);
-    public final static Vector3 RIGHT = new Vector3(1, 0);
-    public final static Vector3 UP = new Vector3(0, 1);
-    public final static Vector3 DOWN = new Vector3(0, -1);
-
-    public double x = 0;
-    public double y = 0;
-    public double z = 0;
+    private final double x;
+    private final double y;
+    private final double z;
 
     public Vector3() {
-
+        x = 0;
+        y = 0;
+        z = 0;
     }
 
     public Vector3(double x, double y) {
@@ -29,13 +26,39 @@ public class Vector3 {
         this.z = z;
     }
 
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public double getZ() {
+        return y;
+    }
+
+    public Vector3 add(final Vector3 other) {
+        return new Vector3(
+                getX() + other.x,
+                getY() + other.y,
+                getZ() + other.z);
+    }
+
+    public Vector3 multiply(final double value) {
+        return new Vector3(
+                getX() * value,
+                getY() * value,
+                getZ() * value);
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (o instanceof Vector3) {
             var other = (Vector3) o;
-            return Objects.equals(x, other.x)
-                    && Objects.equals(y, other.y)
-                    && Objects.equals(z, other.z);
+            return Objects.equals(x, other.getX())
+                    && Objects.equals(y, other.getY())
+                    && Objects.equals(z, other.getZ());
         }
 
         return false;

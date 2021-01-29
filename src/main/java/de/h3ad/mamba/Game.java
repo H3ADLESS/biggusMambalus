@@ -84,7 +84,7 @@ public class Game {
             double nowInSeconds = now / 1000000000.0;
             double deltaTime = nowInSeconds - lastTime;
 
-            gameObjects.sort(Comparator.comparingDouble(o -> o.position.z));
+            gameObjects.sort(Comparator.comparingDouble(o -> o.position.getZ()));
 
             for (GameObject gameObject : gameObjects) {
                 gameObject.update(deltaTime);

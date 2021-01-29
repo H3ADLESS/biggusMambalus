@@ -6,8 +6,8 @@ public class Board extends GameObject {
 
     public static final double BOARD_WIDTH = 790;
     public static final double BOARD_HEIGHT = 590;
-    private static final double LEFT = 5;
-    private static final double TOP = 5;
+    public static final double BOARD_LEFT = 5;
+    public static final double BOARD_TOP = 5;
 
     public Board() {
         super();
@@ -20,6 +20,6 @@ public class Board extends GameObject {
 
     @Override
     public void draw() {
-        getGraphics().strokeRect(LEFT, TOP, BOARD_WIDTH, BOARD_HEIGHT);
+        getGraphics().strokeRect(BOARD_LEFT, BOARD_TOP, BOARD_WIDTH, BOARD_HEIGHT);
     }
 }

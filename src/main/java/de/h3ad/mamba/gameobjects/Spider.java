@@ -1,8 +1,11 @@
 package de.h3ad.mamba.gameobjects;
 
+import de.h3ad.mamba.Direction;
 import de.h3ad.mamba.GameObject;
 import de.h3ad.mamba.math.Vector3;
 import static de.h3ad.mamba.gameobjects.Board.BOARD_HEIGHT;
+import static de.h3ad.mamba.gameobjects.Board.BOARD_LEFT;
+import static de.h3ad.mamba.gameobjects.Board.BOARD_TOP;
 import static de.h3ad.mamba.gameobjects.Board.BOARD_WIDTH;
 
 public class Spider extends GameObject {
@@ -10,7 +13,7 @@ public class Spider extends GameObject {
     private static final double SPIDER_WIDTH = 5;
 
     private double velocity = 100;
-    private Vector3 direction = Vector3.RIGHT;
+    private Direction direction = Direction.RIGHT;
 
     public Spider() {
         super();
@@ -18,53 +21,31 @@ public class Spider extends GameObject {
 
     public void update(double deltaTime) {
         final var distance = velocity * deltaTime;
-
-        if (direction.equals(Vector3.LEFT)) {
-            moveLeft(distance);
-        }
-
-        if (direction.equals(Vector3.RIGHT)) {
-            moveRight(distance);
-        }
-
-        if (direction.equals(Vector3.UP)) {
-            moveUp(distance);
-        }
-
-        if (direction.equals(Vector3.DOWN)) {
-            moveDown(distance);
-        }
+        move(direction, distance);
     }
 
     public void draw() {
-        getGraphics().fillOval(position.x, position.y, SPIDER_WIDTH, SPIDER_WIDTH);
+        getGraphics().fillOval(position.getX(), position.getY(), SPIDER_WIDTH, SPIDER_WIDTH);
     }
 
-    private void moveLeft(final double distance) {
-        this.position.x -= distance;
-        if (this.position.x < 0) {
-            this.position.x = BOARD_WIDTH;
+    private void move(final Direction direction, final double distance) {
+        final Vector3 movement = direction.getVector().multiply(distance);
+        this.position = this.position.add(movement);
+
+        if (this.position.getX() > BOARD_WIDTH) {
+            this.position = new Vector3(BOARD_LEFT, this.position.getY());
         }
-    }
 
-    private void moveRight(final double distance) {
-        this.position.x += distance;
-        if (this.position.x > BOARD_WIDTH) {
-            this.position.x = 0;
+        if (this.position.getX() < BOARD_LEFT) {
+            this.position = new Vector3(BOARD_WIDTH, this.position.getY());
         }
-    }
 
-    private void moveUp(final double distance) {
-        this.position.y += distance;
-        if (this.position.y > BOARD_HEIGHT) {
-            this.position.y = 0;
+        if (this.position.getY() > BOARD_HEIGHT) {
+            this.position = new Vector3(this.position.getX(), BOARD_TOP);
         }
-    }
 
-    private void moveDown(final double distance) {
-        this.position.y -= distance;
-        if (this.position.y < 0) {
-            this.position.y = BOARD_HEIGHT;
+        if (this.position.getY() < BOARD_TOP) {
+            this.position = new Vector3(this.position.getX(), BOARD_HEIGHT);
         }
     }
 }

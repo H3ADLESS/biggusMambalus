@@ -54,6 +54,10 @@ public class Game {
         return graphicsContext;
     }
 
+    public Input getInput() {
+        return input;
+    }
+
     public void register(GameObject gameObject) {
         gameObjects.add(gameObject);
     }

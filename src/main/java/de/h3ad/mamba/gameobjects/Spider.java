@@ -2,7 +2,10 @@ package de.h3ad.mamba.gameobjects;
 
 import de.h3ad.mamba.Direction;
 import de.h3ad.mamba.GameObject;
+import de.h3ad.mamba.Input;
 import de.h3ad.mamba.math.Vector3;
+import javafx.scene.input.KeyCode;
+
 import static de.h3ad.mamba.gameobjects.Board.BOARD_HEIGHT;
 import static de.h3ad.mamba.gameobjects.Board.BOARD_LEFT;
 import static de.h3ad.mamba.gameobjects.Board.BOARD_TOP;
@@ -21,6 +24,21 @@ public class Spider extends GameObject {
 
     public void update(double deltaTime) {
         final var distance = velocity * deltaTime;
+
+        Input input = game.getInput();
+        if (input.isKeyPressed(KeyCode.LEFT)) {
+            direction = Direction.LEFT;
+        }
+        if (input.isKeyPressed(KeyCode.RIGHT)) {
+            direction = Direction.RIGHT;
+        }
+        if (input.isKeyPressed(KeyCode.UP)) {
+            direction = Direction.UP;
+        }
+        if (input.isKeyPressed(KeyCode.DOWN)) {
+            direction = Direction.DOWN;
+        }
+
         move(direction, distance);
     }
 

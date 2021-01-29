@@ -52,6 +52,10 @@ public class Vector3 {
                 getZ() * value);
     }
 
+    public boolean isZero() {
+        return Double.compare(getX(), 0.0) == 0 && Double.compare(getY(), 0.0) == 0 && Double.compare(getZ(), 0.0) == 0;
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (o instanceof Vector3) {
@@ -63,6 +67,8 @@ public class Vector3 {
 
         return false;
     }
+
+
 
     @Override
     public int hashCode() {

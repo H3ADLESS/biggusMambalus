@@ -1,7 +1,9 @@
 package de.h3ad.mamba;
 
 import de.h3ad.mamba.gameobjects.Board;
+import de.h3ad.mamba.gameobjects.Snake;
 import de.h3ad.mamba.gameobjects.Spider;
+import de.h3ad.mamba.math.Vector3;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -41,6 +43,7 @@ public class Main extends Application {
         Game g = Game.init(scene, graphicsContext);
         new Board();
         new Spider();
+        new Snake(new Vector3(800/2, 600/2));
         g.start();
     }
 

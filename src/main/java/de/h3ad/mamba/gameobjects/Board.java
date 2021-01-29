@@ -6,6 +6,7 @@ public class Board extends GameObject {
 
     public static final double BOARD_WIDTH = 790;
     public static final double BOARD_HEIGHT = 590;
+    public static final double BOARD_MARGIN = 5;
     public static final double BOARD_LEFT = 5;
     public static final double BOARD_TOP = 5;
 

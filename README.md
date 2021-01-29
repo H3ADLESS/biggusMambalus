@@ -6,6 +6,9 @@ We want to learn rebuild and improve the base game.
 
 ## Open ToDo's (open for discussion or feedback) 
 
+#### Game Loop (ClownCombat)
+--> implement DoubleBuffering
+
 #### KeyManager (H3ADLESS)
 --> Objects can register themselves for certain Keys.  
 --> Atleast the Keys: UP, DOWN, RIGHT, LEFT, P for Pause, ESC for menu, X, C for increase and decrease speed.

@@ -1,6 +1,5 @@
 package de.h3ad.mamba.gameobjects;
 
-import de.h3ad.mamba.Game;
 import de.h3ad.mamba.GameObject;
 import de.h3ad.mamba.math.Vector3;
 

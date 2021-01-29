@@ -25,25 +25,32 @@ public class Spider extends GameObject {
     public void update(double deltaTime) {
         final var distance = velocity * deltaTime;
 
-        Input input = game.getInput();
-        if (input.isKeyPressed(KeyCode.LEFT)) {
-            direction = Direction.LEFT;
-        }
-        if (input.isKeyPressed(KeyCode.RIGHT)) {
-            direction = Direction.RIGHT;
-        }
-        if (input.isKeyPressed(KeyCode.UP)) {
-            direction = Direction.UP;
-        }
-        if (input.isKeyPressed(KeyCode.DOWN)) {
-            direction = Direction.DOWN;
-        }
-
+        handleInput();
         move(direction, distance);
     }
 
     public void draw() {
         getGraphics().fillOval(position.getX(), position.getY(), SPIDER_WIDTH, SPIDER_WIDTH);
+    }
+
+    private void handleInput() {
+        Input input = game.getInput();
+
+        if (input.isKeyPressed(KeyCode.LEFT)) {
+            direction = Direction.LEFT;
+        }
+
+        if (input.isKeyPressed(KeyCode.RIGHT)) {
+            direction = Direction.RIGHT;
+        }
+
+        if (input.isKeyPressed(KeyCode.UP)) {
+            direction = Direction.UP;
+        }
+
+        if (input.isKeyPressed(KeyCode.DOWN)) {
+            direction = Direction.DOWN;
+        }
     }
 
     private void move(final Direction direction, final double distance) {

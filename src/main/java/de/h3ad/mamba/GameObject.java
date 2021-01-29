@@ -22,7 +22,7 @@ public abstract class GameObject {
     }
 
     public GraphicsContext getGraphics() {
-        return game.graphicsContext;
+        return game.getGraphicsContext();
     }
 
 }

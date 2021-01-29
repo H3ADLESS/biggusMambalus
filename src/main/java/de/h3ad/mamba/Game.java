@@ -1,35 +1,29 @@
 package de.h3ad.mamba;
 
-import javafx.scene.Scene;
-import javafx.scene.canvas.GraphicsContext;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import javafx.animation.AnimationTimer;
+import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+
 public class Game {
 
     private static Game GAME;
+
+    private final Input input;
+    private final GameLoop gameLoop;
+    private final GraphicsContext graphicsContext;
+    private final List<GameObject> gameObjects = new ArrayList<>();
+
     boolean running = false;
-    List<GameObject> gameObjects = new ArrayList<>();
-    GraphicsContext graphicsContext;
-    Scene scene;
-    Input input;
-    double lastTime = System.nanoTime() / 1000000000.0;
 
     private Game(Scene scene, GraphicsContext graphicsContext) {
-        this.scene = scene;
         this.graphicsContext = graphicsContext;
         this.input = new Input(this, scene);
-    }
-
-    public void start() {
-        this.running = true;
-        System.out.println("Called");
-    }
-
-    public void pause() {
-        this.running = false;
+        gameLoop = new GameLoop();
     }
 
     public static Game init(Scene scene, GraphicsContext graphicsContext) {
@@ -46,26 +40,60 @@ public class Game {
         return GAME;
     }
 
-    public void loop(long now) {
-        double nowInSeconds = now / 1000000000.0;
-        double deltaTime = nowInSeconds - lastTime;
+    public void start() {
+        this.running = true;
+        gameLoop.start();
+    }
 
-        gameObjects.sort(Comparator.comparingDouble(o -> o.position.z));
+    public void pause() {
+        this.running = false;
+        gameLoop.stop();
+    }
 
-        for (GameObject gameObject : gameObjects) {
-            gameObject.update(deltaTime);
-            gameObject.draw();
+    public GraphicsContext getGraphicsContext() {
+        return graphicsContext;
+    }
+
+    public void register(GameObject gameObject) {
+        gameObjects.add(gameObject);
+    }
+
+    public void unregister(GameObject gameObject) {
+        gameObjects.remove(gameObject);
+    }
+
+    private class GameLoop extends AnimationTimer {
+        double lastTime = System.nanoTime() / 1000000000.0;
+
+        @Override
+        public void handle(final long now) {
+            final Canvas c = graphicsContext.getCanvas();
+            graphicsContext.clearRect(0,0, c.getWidth(),c.getHeight());
+            nextTick(now);
         }
 
-        lastTime = nowInSeconds;
-    }
+        public void start() {
+            super.start();
+        }
 
-    public void register(GameObject go) {
-        gameObjects.add(go);
-    }
+        public void stop() {
+            super.stop();
+        }
 
-    public void unregister(GameObject go) {
-        gameObjects.add(go);
+        private void nextTick(long now) {
+            double nowInSeconds = now / 1000000000.0;
+            double deltaTime = nowInSeconds - lastTime;
+
+            gameObjects.sort(Comparator.comparingDouble(o -> o.position.z));
+
+            for (GameObject gameObject : gameObjects) {
+                gameObject.update(deltaTime);
+                gameObject.draw();
+            }
+
+            lastTime = nowInSeconds;
+        }
+
     }
 
 }

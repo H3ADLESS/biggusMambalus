@@ -7,7 +7,8 @@ public enum Direction {
     LEFT(new Vector3(-1, 0)),
     RIGHT(new Vector3(1, 0)),
     UP(new Vector3(0, -1)),
-    DOWN(new Vector3(0, 1));
+    DOWN(new Vector3(0, 1)),
+    NONE(new Vector3(0 ,0));
 
     private final Vector3 vector;
 

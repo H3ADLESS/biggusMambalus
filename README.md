@@ -7,8 +7,8 @@ chmod +x gradlew
 
 ## Open ToDo's (open for discussion or feedback) 
 
-#### Game Loop (ClownCombat)
---> implement DoubleBuffering
+#### Game Loop 
+--> implement DoubleBuffering [DONE; JavaFX does not require double buffering]  
 
 #### KeyManager (H3ADLESS)
 --> Objects can register themselves for certain Keys.  

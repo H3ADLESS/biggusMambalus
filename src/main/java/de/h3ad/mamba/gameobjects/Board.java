@@ -4,8 +4,8 @@ import de.h3ad.mamba.GameObject;
 
 public class Board extends GameObject {
 
-    private static final double BOARD_WIDTH = 790;
-    private static final double BOARD_HEIGHT = 590;
+    public static final double BOARD_WIDTH = 790;
+    public static final double BOARD_HEIGHT = 590;
     private static final double LEFT = 5;
     private static final double TOP = 5;
 

@@ -15,6 +15,7 @@ public class SpiderPath {
 
     public void add(Vector3 position) {
         this.path.add(position);
+        handleCollisions(position);
     }
 
     public void updateLast(Vector3 position) {
@@ -22,36 +23,55 @@ public class SpiderPath {
             path.set(path.size() - 1, position);
         }
 
-        handleCollisions();
+        handleCollisions(position);
     }
 
-    private void handleCollisions() {
+    private void handleCollisions(Vector3 currentPosition) {
         // without 5 waypoints (start included) no intersection of own path possible
         if (path.size() > 5) {
 
             Vector3 newestLineP1 = path.get(path.size() - 2);
             Vector3 newestLineP2 = path.get(path.size() - 1);
 
-            Iterator<Vector3> iterator = path.iterator();
-            Vector3 last = iterator.next();
 
-            while (iterator.hasNext()) {
+            Vector3 last = path.get(0);
+
+            for (int i = 1; i < path.size(); i++) {
                 Vector3 v1 = last;
-                Vector3 v2 = iterator.next();
+                Vector3 v2 = path.get(i);
 
                 if (v2 == newestLineP1) return;
 
                 Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(v1, v2, newestLineP1, newestLineP2);
                 if (intersection != null) {
-                    int lastValidWaypoint = path.indexOf(v2);
-                    path = path.subList(0, lastValidWaypoint);
+                    int lastValidWaypoint = path.indexOf(v1);
+                    path = path.subList(0, lastValidWaypoint+1);
                     path.add(intersection);
+                    path.add(currentPosition);
                     System.out.println("Intersection detected @ " + intersection.toString());
                     return;
                 }
 
                 last = v2;
             }
+
+//            while (iterator.hasNext()) {
+//                Vector3 v1 = last;
+//                Vector3 v2 = iterator.next();
+//
+//                if (v2 == newestLineP1) return;
+//
+//                Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(v1, v2, newestLineP1, newestLineP2);
+//                if (intersection != null) {
+//                    int lastValidWaypoint = path.indexOf(v2);
+//                    path = path.subList(0, lastValidWaypoint);
+//                    path.add(intersection);
+//                    System.out.println("Intersection detected @ " + intersection.toString());
+//                    return;
+//                }
+//
+//                last = v2;
+//            }
         }
     }
 

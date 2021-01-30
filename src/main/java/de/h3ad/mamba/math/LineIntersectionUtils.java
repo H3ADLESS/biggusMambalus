@@ -36,7 +36,7 @@ public class LineIntersectionUtils {
         }
 
         if (!line1horizontal && !line2horizontal) {
-            if (p1.getX() != p2.getX()) return null;
+            if (p1.getX() != p3.getX()) return null;
 
             if (p3.getY() < p4.getY()) {
                 // check direction form left to right, as we want the leftmost collision of the lines

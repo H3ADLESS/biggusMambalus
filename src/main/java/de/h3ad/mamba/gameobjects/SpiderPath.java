@@ -54,24 +54,6 @@ public class SpiderPath {
 
                 last = v2;
             }
-
-//            while (iterator.hasNext()) {
-//                Vector3 v1 = last;
-//                Vector3 v2 = iterator.next();
-//
-//                if (v2 == newestLineP1) return;
-//
-//                Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(v1, v2, newestLineP1, newestLineP2);
-//                if (intersection != null) {
-//                    int lastValidWaypoint = path.indexOf(v2);
-//                    path = path.subList(0, lastValidWaypoint);
-//                    path.add(intersection);
-//                    System.out.println("Intersection detected @ " + intersection.toString());
-//                    return;
-//                }
-//
-//                last = v2;
-//            }
         }
     }
 

@@ -37,6 +37,7 @@ public class Spider extends GameObject {
 
         if (lastDirection != direction) {
             spiderPath.add(position);
+            System.out.println(spiderPath.toString());
         } else {
             spiderPath.updateLast(position);
         }
@@ -81,23 +82,35 @@ public class Spider extends GameObject {
         if (this.position.getX() > BOARD_WIDTH + 1 && this.direction == Direction.RIGHT) {
             this.position = new Vector3(BOARD_LEFT + BOARD_WIDTH, this.position.getY());
             this.direction = Direction.NONE;
+            onBorderWalk();
         }
 
         if (this.position.getX() < BOARD_LEFT && this.direction == Direction.LEFT) {
             this.position = new Vector3(BOARD_LEFT, this.position.getY());
             this.direction = Direction.NONE;
+            onBorderWalk();
         }
 
         if (this.position.getY() > BOARD_HEIGHT && this.direction == Direction.DOWN) {
             this.position = new Vector3(this.position.getX(), BOARD_TOP + BOARD_HEIGHT);
             this.direction = Direction.NONE;
+            onBorderWalk();
         }
 
         if (this.position.getY() < BOARD_TOP && this.direction == Direction.UP) {
             this.position = new Vector3(this.position.getX(), BOARD_TOP);
             this.direction = Direction.NONE;
+            onBorderWalk();
         }
 
+        if (this.position.getY() <= BOARD_TOP || this.position.getY() >= (BOARD_TOP + BOARD_HEIGHT) || this.position.getX() <= BOARD_LEFT || this.position.getX() >= (BOARD_LEFT + BOARD_WIDTH)) {
+            onBorderWalk();
+        }
 
     }
+
+    private void onBorderWalk() {
+        this.spiderPath = new SpiderPath();
+    }
+
 }

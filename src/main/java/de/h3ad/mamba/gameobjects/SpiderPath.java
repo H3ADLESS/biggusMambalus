@@ -1,9 +1,13 @@
 package de.h3ad.mamba.gameobjects;
 
+import de.h3ad.mamba.math.LineIntersectionUtils;
 import de.h3ad.mamba.math.Vector3;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class SpiderPath {
 
@@ -16,6 +20,38 @@ public class SpiderPath {
     public void updateLast(Vector3 position) {
         if (this.path.size() > 0) {
             path.set(path.size() - 1, position);
+        }
+
+        handleCollisions();
+    }
+
+    private void handleCollisions() {
+        // without 5 waypoints (start included) no intersection of own path possible
+        if (path.size() > 5) {
+
+            Vector3 newestLineP1 = path.get(path.size() - 2);
+            Vector3 newestLineP2 = path.get(path.size() - 1);
+
+            Iterator<Vector3> iterator = path.iterator();
+            Vector3 last = iterator.next();
+
+            while (iterator.hasNext()) {
+                Vector3 v1 = last;
+                Vector3 v2 = iterator.next();
+
+                if (v2 == newestLineP1) return;
+
+                Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(v1, v2, newestLineP1, newestLineP2);
+                if (intersection != null) {
+                    int lastValidWaypoint = path.indexOf(v2);
+                    path = path.subList(0, lastValidWaypoint);
+                    path.add(intersection);
+                    System.out.println("Intersection detected @ " + intersection.toString());
+                    return;
+                }
+
+                last = v2;
+            }
         }
     }
 
@@ -53,6 +89,8 @@ public class SpiderPath {
 
     }
 
-
+    public String toString() {
+        return path.stream().map(Vector3::toString).collect(Collectors.joining(", "));
+    }
 
 }

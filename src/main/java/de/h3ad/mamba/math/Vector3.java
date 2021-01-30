@@ -74,4 +74,8 @@ public class Vector3 {
     public int hashCode() {
         return Objects.hash(x, y, z);
     }
+
+    public String toString() {
+        return "(" + this.x + ", " + this.y + ")";
+    }
 }

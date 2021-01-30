@@ -111,6 +111,7 @@ public class Spider extends GameObject {
 
     private void onBorderWalk() {
         this.spiderPath = new SpiderPath();
+        this.spiderPath.add(position);
     }
 
 }

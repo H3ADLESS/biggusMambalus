@@ -15,11 +15,17 @@ javafx {
     modules = [ 'javafx.controls' ]
 }
 
+test {
+    useJUnitPlatform()
+}
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testImplementation(platform('org.junit:junit-bom:5.7.0'))
+    testImplementation('org.junit.jupiter:junit-jupiter')
+
     compile 'org.apache.commons:commons-collections4:4.4'
 }

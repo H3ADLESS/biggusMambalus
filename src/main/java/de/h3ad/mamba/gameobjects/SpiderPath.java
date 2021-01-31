@@ -28,7 +28,7 @@ public class SpiderPath {
 
     private void handleCollisions(Vector3 currentPosition) {
         // without 5 waypoints (start included) no intersection of own path possible
-        if (path.size() > 4) {
+        if (path.size() > 2) {
 
             Vector3 newestLineP1 = path.get(path.size() - 2);
             Vector3 newestLineP2 = path.get(path.size() - 1);
@@ -46,10 +46,6 @@ public class SpiderPath {
                 if (intersection != null) {
                     int lastValidWaypoint = path.indexOf(v1);
                     path = path.subList(0, lastValidWaypoint+1);
-//                    Vector3 tmp = path.stream().filter(v -> v == v1).findFirst().orElseGet(null);
-//                    if (tmp != null && lastValidWaypoint == -1) {
-//                        tmp.equals(v1);
-//                    }
                     path.add(intersection);
                     path.add(currentPosition);
                     System.out.println("Intersection detected @ " + intersection.toString());

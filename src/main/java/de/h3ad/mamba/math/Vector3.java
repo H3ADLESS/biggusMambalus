@@ -17,7 +17,7 @@ public class Vector3 {
     public Vector3(double x, double y) {
         this.x = x;
         this.y = y;
-        this.z = 0;
+        this.z = 0.0;
     }
 
     public Vector3(double x, double y, double z) {
@@ -35,7 +35,7 @@ public class Vector3 {
     }
 
     public double getZ() {
-        return y;
+        return z;
     }
 
     public Vector3 add(final Vector3 other) {
@@ -60,9 +60,9 @@ public class Vector3 {
     public boolean equals(final Object o) {
         if (o instanceof Vector3) {
             var other = (Vector3) o;
-            return Objects.equals(x, other.getX())
-                    && Objects.equals(y, other.getY())
-                    && Objects.equals(z, other.getZ());
+            return Double.compare(x, other.getX()) == 0
+                    && Double.compare(y, other.getY()) == 0
+                    && Double.compare(z, other.getZ()) == 0;
         }
 
         return false;

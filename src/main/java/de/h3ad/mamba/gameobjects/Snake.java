@@ -3,7 +3,8 @@ package de.h3ad.mamba.gameobjects;
 import de.h3ad.mamba.Direction;
 import de.h3ad.mamba.GameObject;
 import de.h3ad.mamba.math.Vector3;
-import org.apache.commons.collections4.queue.CircularFifoQueue;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -11,32 +12,25 @@ import static de.h3ad.mamba.gameobjects.Board.*;
 
 public class Snake extends GameObject {
 
-    private final double SNAKE_LINK_WIDTH = 5;
-    private final double SNAKE_LINK_HEIGHT = 5;
-
-    private double velocity = 100;
-    private Direction direction = Direction.RIGHT;
-
-    private int lastDirectionChange = Integer.MAX_VALUE;
-
-
-    CircularFifoQueue<Vector3> body;
-
     private final int MAX_SNAKE_LENGTH = 200;
+    private final double SNAKE_WIDTH = 5;
+    private final double VELOCITY = 100;
+
+    private Direction direction = Direction.RIGHT;
+    private int lastDirectionChange = Integer.MAX_VALUE;
+    private final SnakeList body;
+
+
 
     public Snake(Vector3 startPosition) {
-        body = new CircularFifoQueue<>(MAX_SNAKE_LENGTH);
+        body = new SnakeList(startPosition, MAX_SNAKE_LENGTH);
         this.position = startPosition;
-        addBodyLink(startPosition);
     }
 
-    private void addBodyLink(Vector3 position) {
-        this.body.add(position);
-    }
 
     @Override
     public void update(double deltaTime) {
-        final var distance = velocity * deltaTime;
+        final var distance = VELOCITY * deltaTime;
         if (lastDirectionChange > 20) {
             Direction newDirection = changeDirection();
             // only change direction if it isn't the opposite of last direction
@@ -48,7 +42,7 @@ public class Snake extends GameObject {
             lastDirectionChange++;
         }
         move(direction, distance);
-        addBodyLink(position);
+        body.addNewPosition(position);
     }
 
     private Direction changeDirection() {
@@ -85,7 +79,7 @@ public class Snake extends GameObject {
         }
 
         if (this.position.getY() > BOARD_HEIGHT-BOARD_MARGIN) {
-            this.position = new Vector3(this.position.getX(), BOARD_MARGIN);
+            this.position = new Vector3(this.position.getX(), BOARD_HEIGHT-BOARD_MARGIN);
         }
 
         if (this.position.getY() < BOARD_MARGIN) {
@@ -95,8 +89,25 @@ public class Snake extends GameObject {
 
     @Override
     public void draw() {
-        body.stream().forEach(v -> {
-            getGraphics().fillRect(v.getX(), v.getY(), SNAKE_LINK_WIDTH, SNAKE_LINK_HEIGHT);
-        });
+        Vector3 lastV = null;
+        for (Vector3 v : body.getAllNodes()) {
+            if (lastV == null) {
+                lastV = v;
+                continue;
+            }
+            // remember old setup
+            double oldLineWidth = getGraphics().getLineWidth();
+            Paint oldStroke = getGraphics().getStroke();
+
+            // change to snake setup and draw snake
+            getGraphics().setStroke(Color.RED);
+            getGraphics().setLineWidth(SNAKE_WIDTH);
+            getGraphics().strokePolyline(new double[]{lastV.getX(), v.getX()}, new double[]{lastV.getY(), v.getY()}, 2);
+
+            // reset to old setup
+            getGraphics().setLineWidth(oldLineWidth);
+            getGraphics().setStroke(oldStroke);
+            lastV = v;
+        }
     }
 }

@@ -68,7 +68,30 @@ public class Vector3 {
         return false;
     }
 
+    /**
+     * Checks if this Vector3 is on the line defined by start and end (ignoring z values). Returns true even if it is
+     * not between the reference vectors.
+     *
+     * @param start reference start Vector
+     * @param end reference end Vector
+     */
+    public boolean isOnLine(Vector3 start, Vector3 end) {
+        if (Objects.equals(this.getX(), start.getX()) && Objects.equals(this.getX(), end.getX())) {
+            return true;
+        } else if (Objects.equals(this.getY(), start.getY()) && Objects.equals(this.getY(), end.getY())) {
+            return true;
+        }
+        return false;
+    }
 
+
+    public double squaredDistance(Vector3 position) {
+        return Math.pow(position.getX() - this.getX(), 2) + Math.pow(position.getY() - this.getY(), 2) + Math.pow(position.getZ() - this.getZ(), 2);
+    }
+
+    public double distance(Vector3 position) {
+        return Math.sqrt(this.squaredDistance(position));
+    }
 
     @Override
     public int hashCode() {

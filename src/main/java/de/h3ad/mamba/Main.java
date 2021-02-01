@@ -44,7 +44,7 @@ public class Main extends Application {
         Game g = Game.init(scene, graphicsContext);
         new Board();
         new Spider();
-        new Snake(new Vector3(800/2, 600/2));
+        new Snake(new Vector3(Board.BOARD_WIDTH/2, Board.BOARD_HEIGHT/2));
         g.start();
     }
 

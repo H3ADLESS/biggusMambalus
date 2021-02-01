@@ -46,6 +46,16 @@ public class SnakeList {
         }
     }
 
+    private double getBodyLength() {
+        double distance = 0;
+        SnakeNode curr = first;
+        while (curr.next != null) {
+            distance += curr.position.distance(curr.next.position);
+            curr = curr.next;
+        }
+        return distance;
+    }
+
     private void shortenLastLink(double toCut) {
         if (Double.compare(last.position.getX(), last.prev.position.getX()) == 0) {
             if (last.position.getY() < last.prev.position.getY()) {
@@ -60,8 +70,7 @@ public class SnakeList {
                 last.position = new Vector3(last.position.getX() - toCut, last.position.getY(), last.position.getZ());
             }
         }
-        // this might make problems because of inaccuracy of doubles, consider calculating the length from scratch
-        bodyLength = bodyLength - toCut;
+        bodyLength = this.getBodyLength() - toCut;
     }
 
     public List<Vector3> getAllNodes() {

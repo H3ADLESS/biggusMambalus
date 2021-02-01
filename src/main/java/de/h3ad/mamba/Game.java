@@ -5,9 +5,14 @@ import java.util.Comparator;
 import java.util.List;
 
 import javafx.animation.AnimationTimer;
+import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 
 public class Game {
 
@@ -19,6 +24,7 @@ public class Game {
     private final List<GameObject> gameObjects = new ArrayList<>();
 
     boolean running = false;
+    boolean paused = false;
 
     private Game(Scene scene, GraphicsContext graphicsContext) {
         this.graphicsContext = graphicsContext;
@@ -45,9 +51,13 @@ public class Game {
         gameLoop.start();
     }
 
-    public void pause() {
+    public void stop() {
         this.running = false;
         gameLoop.stop();
+    }
+
+    public void togglePause() {
+        this.paused = !this.paused;
     }
 
     public GraphicsContext getGraphicsContext() {
@@ -68,11 +78,10 @@ public class Game {
 
     private class GameLoop extends AnimationTimer {
         double lastTime = System.nanoTime() / 1000000000.0;
+        final Canvas c = graphicsContext.getCanvas();
 
         @Override
         public void handle(final long now) {
-            final Canvas c = graphicsContext.getCanvas();
-            graphicsContext.clearRect(0,0, c.getWidth(),c.getHeight());
             nextTick(now);
         }
 
@@ -88,12 +97,35 @@ public class Game {
             double nowInSeconds = now / 1000000000.0;
             double deltaTime = nowInSeconds - lastTime;
 
-            gameObjects.sort(Comparator.comparingDouble(o -> o.position.getZ()));
-
-            for (GameObject gameObject : gameObjects) {
-                gameObject.update(deltaTime);
-                gameObject.draw();
+            if (input.isKeyPressed(KeyCode.ESCAPE)) {
+                togglePause();
             }
+
+            if (!paused) {
+
+                graphicsContext.setFont(new Font(30));
+                graphicsContext.setTextAlign(TextAlignment.CENTER);
+                graphicsContext.setTextBaseline(VPos.CENTER);
+                graphicsContext.setFill(Color.GREEN);
+                graphicsContext.fillText(
+                        "Text centered on your Canvas",
+                        Math.round(c.getWidth()  / 2),
+                        Math.round(c.getHeight() / 2)
+                );
+                graphicsContext.setFill(Color.BLACK);
+
+//                graphicsContext.fillText("hallo", 50,50, 10);
+
+                graphicsContext.clearRect(0,0, c.getWidth(),c.getHeight());
+                gameObjects.sort(Comparator.comparingDouble(o -> o.position.getZ()));
+
+                for (GameObject gameObject : gameObjects) {
+                    gameObject.update(deltaTime);
+                    gameObject.draw();
+                }
+            }
+
+            input.onAfterUpdate();
 
             lastTime = nowInSeconds;
         }

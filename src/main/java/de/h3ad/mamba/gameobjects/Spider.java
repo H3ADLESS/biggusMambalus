@@ -57,19 +57,19 @@ public class Spider extends GameObject {
     private void handleInput() {
         Input input = game.getInput();
 
-        if (input.isKeyPressed(KeyCode.LEFT)) {
+        if (input.isKeyDown(KeyCode.LEFT)) {
             direction = Direction.LEFT;
         }
 
-        if (input.isKeyPressed(KeyCode.RIGHT)) {
+        if (input.isKeyDown(KeyCode.RIGHT)) {
             direction = Direction.RIGHT;
         }
 
-        if (input.isKeyPressed(KeyCode.UP)) {
+        if (input.isKeyDown(KeyCode.UP)) {
             direction = Direction.UP;
         }
 
-        if (input.isKeyPressed(KeyCode.DOWN)) {
+        if (input.isKeyDown(KeyCode.DOWN)) {
             direction = Direction.DOWN;
 
         }

@@ -78,7 +78,7 @@ public class Game {
     }
 
     /**
-     * Is called before first frame and after graphics initalization
+     * Is called before first frame and after graphics initialization
      */
     public void setup() {
         fpsCounter = new FpsCounter(new Vector3(10,20));

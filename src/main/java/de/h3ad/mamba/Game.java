@@ -1,18 +1,16 @@
 package de.h3ad.mamba;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
+import de.h3ad.mamba.gameobjects.text.FpsCounter;
+import de.h3ad.mamba.math.Vector3;
 import javafx.animation.AnimationTimer;
-import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.TextAlignment;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public class Game {
 
@@ -26,6 +24,8 @@ public class Game {
     boolean running = false;
     boolean paused = false;
 
+    FpsCounter fpsCounter;
+
     private Game(Scene scene, GraphicsContext graphicsContext) {
         this.graphicsContext = graphicsContext;
         this.input = new Input(this, scene);
@@ -35,6 +35,7 @@ public class Game {
     public static Game init(Scene scene, GraphicsContext graphicsContext) {
         if (GAME == null) {
             GAME = new Game(scene, graphicsContext);
+            GAME.setup();
         }
         return GAME;
     }
@@ -76,6 +77,13 @@ public class Game {
         gameObjects.remove(gameObject);
     }
 
+    /**
+     * Is called before first frame and after graphics initalization
+     */
+    public void setup() {
+        fpsCounter = new FpsCounter(new Vector3(10,20));
+    }
+
     private class GameLoop extends AnimationTimer {
         double lastTime = System.nanoTime() / 1000000000.0;
         final Canvas c = graphicsContext.getCanvas();
@@ -102,21 +110,8 @@ public class Game {
             }
 
             if (!paused) {
-
-                graphicsContext.setFont(new Font(30));
-                graphicsContext.setTextAlign(TextAlignment.CENTER);
-                graphicsContext.setTextBaseline(VPos.CENTER);
-                graphicsContext.setFill(Color.GREEN);
-                graphicsContext.fillText(
-                        "Text centered on your Canvas",
-                        Math.round(c.getWidth()  / 2),
-                        Math.round(c.getHeight() / 2)
-                );
-                graphicsContext.setFill(Color.BLACK);
-
-//                graphicsContext.fillText("hallo", 50,50, 10);
-
                 graphicsContext.clearRect(0,0, c.getWidth(),c.getHeight());
+
                 gameObjects.sort(Comparator.comparingDouble(o -> o.position.getZ()));
 
                 for (GameObject gameObject : gameObjects) {

@@ -8,35 +8,42 @@ chmod +x gradlew
 ## Open ToDo's (open for discussion or feedback) 
 
 #### Game Loop 
---> implement DoubleBuffering [DONE; JavaFX does not require double buffering]  
+Done
 
-#### KeyManager (H3ADLESS)
---> Objects can register themselves for certain Keys.  
---> Atleast the Keys: UP, DOWN, RIGHT, LEFT, P for Pause, ESC for menu, X, C for increase and decrease speed.
+#### KeyManager
+- Objects can register themselves for certain Keys (Yes. they can).
+- At least the Keys: 
+  - UP
+  - DOWN
+  - RIGHT
+  - LEFT
+  - P for Pause
+  - ESC for menu
+  - X, C for increase and decrease speed
 
-#### Snake (M3m3l)
---> Rendering and Display of the Snake
---> Movement of the Snake
---> SnakeIntelligence i.e. level dependent 
+#### Snake
+- Rendering and Display of the Snake
+- Movement of the Snake
+- SnakeIntelligence i.e. level dependent
 
-#### Spider (ClownCombat)
---> Direction Change on Input  
---> Movement Logic   
---> Spider Image
+#### Spider
+- Direction Change on Input
+- Movement Logic   
+- Spider Image
 
 #### SpiderThread
---> Rendering
+- Rendering
 
 #### Board Logic
---> Spider Territory (Grey Space)  
---> SpiderThread Collision  
---> Snake bites Spider   
+- Spider Territory (Grey Space)  
+- SpiderThread Collision  
+- Snake bites Spider   
 
 #### Level Logic
---> Level dependent stuff
+- Level dependent stuff
 
 #### Points Calculations
---> Spider Territory to points   
---> CurrentScore   
---> HighScore
+- Spider Territory to points   
+- CurrentScore   
+- HighScore
 

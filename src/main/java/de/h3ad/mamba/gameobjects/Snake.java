@@ -33,7 +33,7 @@ public class Snake extends GameObject {
         final var distance = VELOCITY * deltaTime;
         Direction newDirection = direction;
         if (distanceSinceLastDirectionChange > MAX_SNAKE_LENGTH / 10.0) {
-            if (ThreadLocalRandom.current().nextDouble(MAX_SNAKE_LENGTH) < distanceSinceLastDirectionChange) {
+            if (ThreadLocalRandom.current().nextDouble(MAX_SNAKE_LENGTH) < distanceSinceLastDirectionChange/10.0) {
                 newDirection = changeDirection();
                 distanceSinceLastDirectionChange = 0.0;
             }

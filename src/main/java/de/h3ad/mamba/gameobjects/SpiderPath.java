@@ -1,13 +1,12 @@
 package de.h3ad.mamba.gameobjects;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import de.h3ad.mamba.math.Line;
 import de.h3ad.mamba.math.LineIntersectionUtils;
 import de.h3ad.mamba.math.Vector3;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 public class SpiderPath {
 
@@ -42,7 +41,11 @@ public class SpiderPath {
 
                 if (v2 == newestLineP1) return;
 
-                Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(v1, v2, newestLineP1, newestLineP2);
+
+
+                final Line currentLine = new Line(v1, v2);
+                final Line newLine = new Line(v1, v2);
+                Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(currentLine, newLine);
                 if (intersection != null) {
                     int lastValidWaypoint = path.indexOf(v1);
                     path = path.subList(0, lastValidWaypoint+1);

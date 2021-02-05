@@ -1,8 +1,13 @@
-import de.h3ad.mamba.math.Vector3;
-import de.h3ad.mamba.math.LineIntersectionUtils;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import de.h3ad.mamba.math.Line;
+import de.h3ad.mamba.math.LineIntersectionUtils;
+import de.h3ad.mamba.math.Vector3;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LineIntersectionUtilsTest {
 
@@ -58,7 +63,9 @@ public class LineIntersectionUtilsTest {
         Vector3 y = new Vector3(5, 15);
         Vector3 z = new Vector3(15, 15);
 
-        Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(a, b, y, z);
+        final Line verticalLine = new Line(a, b);
+        final Line horizontalLine = new Line(y, z);
+        Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(verticalLine, horizontalLine);
 
         assertNotNull(intersection);
         assertEquals(intersection.getX(), 10.0);
@@ -72,7 +79,9 @@ public class LineIntersectionUtilsTest {
         Vector3 y = new Vector3(10, 10);
         Vector3 z = new Vector3(10, 20);
 
-        Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(a, b, y, z);
+        final Line horizontalLine = new Line(a, b);
+        final Line verticalLine = new Line(y, z);
+        Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(horizontalLine, verticalLine);
 
         assertNotNull(intersection);
         assertEquals(intersection.getX(), 10.0);
@@ -86,7 +95,9 @@ public class LineIntersectionUtilsTest {
         Vector3 y = new Vector3(1, 15);
         Vector3 z = new Vector3(3, 15);
 
-        Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(a, b, y, z);
+        final Line horizontalLine1 = new Line(a, b);
+        final Line horizontalLine2 = new Line(y, z);
+        Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(horizontalLine1, horizontalLine2);
 
         assertNotNull(intersection);
         assertEquals(intersection.getX(), 1.0);
@@ -100,7 +111,9 @@ public class LineIntersectionUtilsTest {
         Vector3 y = new Vector3(3, 15);
         Vector3 z = new Vector3(1, 15);
 
-        Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(a, b, y, z);
+        final Line horizontalLine1 = new Line(a, b);
+        final Line horizontalLine2 = new Line(y, z);
+        Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(horizontalLine1, horizontalLine2);
 
         assertNotNull(intersection);
         assertEquals(intersection.getX(), 1.0);
@@ -111,10 +124,11 @@ public class LineIntersectionUtilsTest {
     public void horizontalLinesDoNotCrossButAppend() {
         Vector3 a = new Vector3(0, 15);
         Vector3 b = new Vector3(1, 15);
-        Vector3 y = new Vector3(1, 15);
         Vector3 z = new Vector3(2, 15);
 
-        Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(a, b, y, z);
+        final Line horizontalLine1 = new Line(a, b);
+        final Line horizontalLine2 = new Line(b, z);
+        Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(horizontalLine1, horizontalLine2);
 
         assertNull(intersection);
     }
@@ -126,7 +140,9 @@ public class LineIntersectionUtilsTest {
         Vector3 y = new Vector3(2, 15);
         Vector3 z = new Vector3(3, 15);
 
-        Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(a, b, y, z);
+        final Line horizontalLine1 = new Line(a, b);
+        final Line horizontalLine2 = new Line(y, z);
+        Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(horizontalLine1, horizontalLine2);
 
         assertNull(intersection);
     }

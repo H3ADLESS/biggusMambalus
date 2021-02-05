@@ -8,6 +8,7 @@ public class LineIntersectionUtils {
      * @params p3, p4 points of newest line
      * @return intersection of lines or null
      */
+
     public static Vector3 intersectionOfHorizontalAndVerticalLines(final Line line1, final Line line2) {
 
         final Vector3 p1 = line1.getV1();
@@ -17,7 +18,6 @@ public class LineIntersectionUtils {
 
         boolean line1horizontal = line1.isHorizontal();
         boolean line2horizontal = line2.isHorizontal();
-
 
         // horizontal and parallel
         if (line1horizontal && line2horizontal) {
@@ -54,53 +54,53 @@ public class LineIntersectionUtils {
     }
 
     private static Vector3 intersectionOfHorizontalLines(final Line line1, final Line line2) {
-        final Vector3 p1 = line1.getV1();
-        final Vector3 p2 = line1.getV2();
-        final Vector3 p3 = line2.getV1();
-        final Vector3 p4 = line2.getV2();
-
-        if (p1.getY() != p3.getY()) {
+        if (line1.distanceTo(line2) > 0.0) {
             return null;
         }
 
-        if (p3.getX() < p4.getX()) {
-            // check direction form left to right, as we want the leftmost collision of the lines
-            if (isBetween(p3.getX(), p1.getX(), p2.getX())) {
-                System.out.println(p1 + ", " + ", " + p2 + ", " + p3 + ", " + p4);
-                return p3;
-            }
-        } else {
-            if (isBetween(p4.getX(), p1.getX(), p2.getX())) {
-                System.out.println(p1 + ", " + ", " + p2 + ", " + p3 + ", " + p4);
-                return p4;
-            }
+        if (isOnHorizontalLine(line2.getLeftPoint(), line1)) {
+            return line2.getLeftPoint();
         }
 
         return null;
     }
 
+    // Returns true, if x is between a and b, AND not a and b
+    private static boolean isOnHorizontalLine(final Vector3 point, final Line line) {
+        if (point.getX() <= line.getLeftPoint().getX()) {
+            return false;
+        }
+
+        if (point.getX() >= line.getRightPoint().getX()) {
+            return false;
+        }
+
+        return true;
+    }
+
     private static Vector3 intersectionOfVerticalLines(final Line line1, final Line line2) {
-        final Vector3 p1 = line1.getV1();
-        final Vector3 p2 = line1.getV2();
-        final Vector3 p3 = line2.getV1();
-        final Vector3 p4 = line2.getV2();
+        if (line1.distanceTo(line2) > 0.0) {
+            return null;
+        }
 
-        if (p1.getX() != p3.getX()) return null;
-
-        if (p3.getY() < p4.getY()) {
-            // check direction form left to right, as we want the leftmost collision of the lines
-            if (isBetween(p3.getY(), p1.getY(), p2.getY())) {
-                System.out.println(p1 + ", " + ", " + p2 + ", " + p3 + ", " + p4);
-                return p3;
-            }
-        } else {
-            if (isBetween(p4.getY(), p1.getY(), p2.getY())) {
-                System.out.println(p1 + ", " + ", " + p2 + ", " + p3 + ", " + p4);
-                return p4;
-            }
+        if (isOnVerticalLine(line2.getTopPoint(), line1)) {
+            return line2.getTopPoint();
         }
 
         return null;
+    }
+
+    // Returns true, if x is between a and b, AND not a and b
+    private static boolean isOnVerticalLine(final Vector3 point, final Line line) {
+        if (point.getY() <= line.getTopPoint().getY()) {
+            return false;
+        }
+
+        if (point.getY() >= line.getBottomPoint().getY()) {
+            return false;
+        }
+
+        return true;
     }
 
     public static boolean isBetween(double center, double start, double end) {

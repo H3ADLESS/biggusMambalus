@@ -41,8 +41,6 @@ public class SpiderPath {
 
                 if (v2 == newestLineP1) return;
 
-
-
                 final Line currentLine = new Line(v1, v2);
                 final Line newLine = new Line(newestLineP1, newestLineP2);
                 Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(currentLine, newLine);

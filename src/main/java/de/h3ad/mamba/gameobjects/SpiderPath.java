@@ -44,7 +44,7 @@ public class SpiderPath {
 
 
                 final Line currentLine = new Line(v1, v2);
-                final Line newLine = new Line(v1, v2);
+                final Line newLine = new Line(newestLineP1, newestLineP2);
                 Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(currentLine, newLine);
                 if (intersection != null) {
                     int lastValidWaypoint = path.indexOf(v1);

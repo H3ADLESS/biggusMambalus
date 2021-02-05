@@ -11,8 +11,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LineIntersectionUtilsTest {
 
+    public static final int X_OFFSET = 10;
+    public static final int Y_OFFSET = 15;
+
     @Test
-    public void isBetweenIsFalseOnSameValues() {
+    void isBetweenIsFalseOnSameValues() {
         double a = 0.0;
         double b = 0.0;
         double center = 0.0;
@@ -21,7 +24,7 @@ public class LineIntersectionUtilsTest {
     }
 
     @Test
-    public void isBetweenIsFalseOnSameStart() {
+    void isBetweenIsFalseOnSameStart() {
         double a = 0.0;
         double b = 1.0;
         double center = 0.0;
@@ -30,7 +33,7 @@ public class LineIntersectionUtilsTest {
     }
 
     @Test
-    public void isBetweenIsFalseOnSameEnd() {
+    void isBetweenIsFalseOnSameEnd() {
         double a = 0.0;
         double b = 1.0;
         double center = 1.0;
@@ -39,7 +42,7 @@ public class LineIntersectionUtilsTest {
     }
 
     @Test
-    public void isBetweenIsTrueOnInBetween() {
+    void isBetweenIsTrueOnInBetween() {
         double a = 0.0;
         double b = 1.0;
         double center = 0.5;
@@ -48,7 +51,7 @@ public class LineIntersectionUtilsTest {
     }
 
     @Test
-    public void isBetweenIsFalseOnOutsideValue() {
+    void isBetweenIsFalseOnOutsideValue() {
         double a = 0.0;
         double b = 1.0;
         double center = 1.5;
@@ -57,92 +60,140 @@ public class LineIntersectionUtilsTest {
     }
 
     @Test
-    public void linesCrossAtGivenPositionWhenHorizontalFirst() {
-        Vector3 a = new Vector3(10, 10);
-        Vector3 b = new Vector3(10, 20);
-        Vector3 y = new Vector3(5, 15);
-        Vector3 z = new Vector3(15, 15);
+    void intersectionOf_should_return_a_vector_if_given_a_vertical_and_horizontal_line() {
+        final Line verticalLine = new Line(new Vector3(X_OFFSET, 10), new Vector3(X_OFFSET, 20));
+        final Line horizontalLine = new Line(new Vector3(5, Y_OFFSET), new Vector3(15, Y_OFFSET));
+        final Vector3 intersection1 = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(verticalLine, horizontalLine);
+        final Vector3 intersection2 = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(horizontalLine, verticalLine);
 
-        final Line verticalLine = new Line(a, b);
-        final Line horizontalLine = new Line(y, z);
-        Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(verticalLine, horizontalLine);
-
-        assertNotNull(intersection);
-        assertEquals(intersection.getX(), 10.0);
-        assertEquals(intersection.getY(), 15.0);
+        assertNotNull(intersection1);
+        assertEquals(intersection1, intersection2);
+        assertEquals(intersection1.getX(), X_OFFSET);
+        assertEquals(intersection1.getY(), Y_OFFSET);
     }
 
     @Test
-    public void linesCrossAtGivenPositionWhenVerticalFirst() {
-        Vector3 a = new Vector3(5, 15);
-        Vector3 b = new Vector3(15, 15);
-        Vector3 y = new Vector3(10, 10);
-        Vector3 z = new Vector3(10, 20);
+    void horizontalLinesCrossWhenLeftToRight() {
+        // ab contains c in:
+        // a -- c -- b -- d
 
-        final Line horizontalLine = new Line(a, b);
-        final Line verticalLine = new Line(y, z);
-        Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(horizontalLine, verticalLine);
-
-        assertNotNull(intersection);
-        assertEquals(intersection.getX(), 10.0);
-        assertEquals(intersection.getY(), 15.0);
-    }
-
-    @Test
-    public void horizontalLinesCrossWhenLeftToRight() {
-        Vector3 a = new Vector3(0, 15);
-        Vector3 b = new Vector3(2, 15);
-        Vector3 y = new Vector3(1, 15);
-        Vector3 z = new Vector3(3, 15);
-
-        final Line horizontalLine1 = new Line(a, b);
-        final Line horizontalLine2 = new Line(y, z);
-        Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(horizontalLine1, horizontalLine2);
+        final Line left = new Line(new Vector3(0, Y_OFFSET), new Vector3(2, Y_OFFSET));
+        final Line right = new Line(new Vector3(1, Y_OFFSET), new Vector3(3, Y_OFFSET));
+        final Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(left, right);
 
         assertNotNull(intersection);
         assertEquals(intersection.getX(), 1.0);
-        assertEquals(intersection.getY(), 15.0);
+        assertEquals(intersection.getY(), Y_OFFSET);
     }
 
     @Test
-    public void horizontalLinesCrossWhenRightToLeft() {
-        Vector3 a = new Vector3(0, 15);
-        Vector3 b = new Vector3(2, 15);
-        Vector3 y = new Vector3(3, 15);
-        Vector3 z = new Vector3(1, 15);
+    void horizontalLinesCrossWhenRightToLeft() {
+        // ab contains d in:
+        // a -- d -- b -- c
 
-        final Line horizontalLine1 = new Line(a, b);
-        final Line horizontalLine2 = new Line(y, z);
-        Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(horizontalLine1, horizontalLine2);
+        final Line left = new Line(new Vector3(0, Y_OFFSET), new Vector3(2, Y_OFFSET));
+        final Line right = new Line(new Vector3(3, Y_OFFSET), new Vector3(1, Y_OFFSET));
+        final Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(left, right);
 
         assertNotNull(intersection);
         assertEquals(intersection.getX(), 1.0);
-        assertEquals(intersection.getY(), 15.0);
+        assertEquals(intersection.getY(), Y_OFFSET);
     }
 
     @Test
-    public void horizontalLinesDoNotCrossButAppend() {
-        Vector3 a = new Vector3(0, 15);
-        Vector3 b = new Vector3(1, 15);
-        Vector3 z = new Vector3(2, 15);
+    void horizontalLinesDoNotCrossButAppend() {
+        // both lines sharing point b: ab and bc
+        // a -- b -- c
 
-        final Line horizontalLine1 = new Line(a, b);
-        final Line horizontalLine2 = new Line(b, z);
-        Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(horizontalLine1, horizontalLine2);
+        final Vector3 b = new Vector3(1, Y_OFFSET);
+        final Line left = new Line(new Vector3(0, Y_OFFSET), b);
+        final Line right = new Line(b, new Vector3(2, Y_OFFSET));
+        final Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(left, right);
 
         assertNull(intersection);
     }
 
     @Test
-    public void horizontalLinesDoNotCross() {
-        Vector3 a = new Vector3(0, 15);
-        Vector3 b = new Vector3(1, 15);
-        Vector3 y = new Vector3(2, 15);
-        Vector3 z = new Vector3(3, 15);
+    void horizontalLinesDoNotCross() {
+        // ab and cd got a distance greater than zero
+        // a -- b -- c -- d
 
-        final Line horizontalLine1 = new Line(a, b);
-        final Line horizontalLine2 = new Line(y, z);
-        Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(horizontalLine1, horizontalLine2);
+        final Line left = new Line(new Vector3(0, Y_OFFSET), new Vector3(1, Y_OFFSET));
+        final Line right = new Line(new Vector3(2, Y_OFFSET), new Vector3(3, Y_OFFSET));
+        final Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(left, right);
+        assertNull(intersection);
+    }
+
+    @Test
+    void verticalLinesCrossWhenTopToBottom() {
+        // ab contains c in:
+        // a
+        // |
+        // c
+        // |
+        // b
+        // |
+        // d
+
+        final Line top = new Line(new Vector3(X_OFFSET, 0), new Vector3(X_OFFSET, 2));
+        final Line bottom = new Line(new Vector3(X_OFFSET, 1), new Vector3(X_OFFSET, 3));
+        final Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(top, bottom);
+
+        assertNotNull(intersection);
+        assertEquals(intersection.getX(), X_OFFSET);
+        assertEquals(intersection.getY(), 1.0);
+    }
+
+    @Test
+    void verticalLinesCrossWhenRightToLeft() {
+        // ab contains d in:
+        // a
+        // |
+        // d
+        // |
+        // b
+        // |
+        // c
+
+        final Line top = new Line(new Vector3(X_OFFSET, 0), new Vector3(X_OFFSET, 2));
+        final Line bottom = new Line(new Vector3(X_OFFSET, 3), new Vector3(X_OFFSET, 1));
+        final Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(top, bottom);
+
+        assertNotNull(intersection);
+        assertEquals(intersection.getX(), X_OFFSET);
+        assertEquals(intersection.getY(), 1.0);
+    }
+
+    @Test
+    void verticalLinesDoNotCrossButAppend() {
+        // both lines sharing point b: ab and bc
+        // a
+        // |
+        // b
+        // |
+        // c
+
+        final Line top = new Line(new Vector3(X_OFFSET, 0), new Vector3(X_OFFSET, 2));
+        final Line bottom = new Line(new Vector3(X_OFFSET, 2), new Vector3(X_OFFSET, 3));
+        final Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(top, bottom);
+
+        assertNull(intersection);
+    }
+
+    @Test
+    void verticalLinesDoNotCross() {
+        // ab and cd got a distance greater than zero
+        // a
+        // |
+        // b
+        // |
+        // c
+        // |
+        // d
+
+        final Line top = new Line(new Vector3(X_OFFSET, 0), new Vector3(X_OFFSET, 1));
+        final Line bottom = new Line(new Vector3(X_OFFSET, 2), new Vector3(X_OFFSET, 3));
+        final Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(top, bottom);
 
         assertNull(intersection);
     }

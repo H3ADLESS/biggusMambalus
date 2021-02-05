@@ -65,6 +65,4 @@ public class Line {
 
         return 0.0;
     }
-
-
 }

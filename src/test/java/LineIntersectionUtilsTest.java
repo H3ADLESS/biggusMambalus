@@ -61,7 +61,7 @@ public class LineIntersectionUtilsTest {
 
     @Test
     void intersectionOf_should_return_a_vector_if_given_a_vertical_and_horizontal_line() {
-        final Line verticalLine = new Line(new Vector3(X_OFFSET, 10), new Vector3(X_OFFSET, 20));
+        final Line verticalLine = new Line(new Vector3(X_OFFSET, 12), new Vector3(X_OFFSET, 20));
         final Line horizontalLine = new Line(new Vector3(5, Y_OFFSET), new Vector3(15, Y_OFFSET));
         final Vector3 intersection1 = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(verticalLine, horizontalLine);
         final Vector3 intersection2 = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(horizontalLine, verticalLine);
@@ -70,6 +70,17 @@ public class LineIntersectionUtilsTest {
         assertEquals(intersection1, intersection2);
         assertEquals(intersection1.getX(), X_OFFSET);
         assertEquals(intersection1.getY(), Y_OFFSET);
+    }
+
+    @Test
+    void intersectionOf_should_return_null_if_given_a_vertical_and_horizontal_line_which_do_not_cross() {
+        final Line verticalLine = new Line(new Vector3(X_OFFSET, 4), new Vector3(X_OFFSET, 8));
+        final Line horizontalLine = new Line(new Vector3(30, Y_OFFSET), new Vector3(35, Y_OFFSET));
+        final Vector3 intersection1 = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(verticalLine, horizontalLine);
+        final Vector3 intersection2 = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(horizontalLine, verticalLine);
+
+        assertNull(intersection1);
+        assertNull(intersection2);
     }
 
     @Test

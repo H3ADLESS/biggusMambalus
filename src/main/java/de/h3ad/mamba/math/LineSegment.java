@@ -1,11 +1,11 @@
 package de.h3ad.mamba.math;
 
-public class Line {
+public class LineSegment {
 
     private final Vector3 v1;
     private final Vector3 v2;
 
-    public Line(final Vector3 v1, final Vector3 v2) {
+    public LineSegment(final Vector3 v1, final Vector3 v2) {
         this.v1 = v1;
         this.v2 = v2;
     }
@@ -54,7 +54,7 @@ public class Line {
         return (Double.compare(v1.getX(), v2.getX()) == 0);
     }
 
-    public double distanceTo(final Line other) {
+    public double distanceTo(final LineSegment other) {
         if (isHorizontal() && other.isHorizontal()) {
             return Math.abs(this.v1.getY() - other.getV1().getY());
         }

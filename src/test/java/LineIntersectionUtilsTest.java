@@ -1,7 +1,7 @@
 import org.junit.jupiter.api.Test;
 
-import de.h3ad.mamba.math.Line;
 import de.h3ad.mamba.math.LineIntersectionUtils;
+import de.h3ad.mamba.math.LineSegment;
 import de.h3ad.mamba.math.Vector3;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -61,10 +61,10 @@ public class LineIntersectionUtilsTest {
 
     @Test
     void intersectionOf_should_return_a_vector_if_given_a_vertical_and_horizontal_line() {
-        final Line verticalLine = new Line(new Vector3(X_OFFSET, 12), new Vector3(X_OFFSET, 20));
-        final Line horizontalLine = new Line(new Vector3(5, Y_OFFSET), new Vector3(15, Y_OFFSET));
-        final Vector3 intersection1 = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(verticalLine, horizontalLine);
-        final Vector3 intersection2 = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(horizontalLine, verticalLine);
+        final LineSegment verticalLineSegment = new LineSegment(new Vector3(X_OFFSET, 12), new Vector3(X_OFFSET, 20));
+        final LineSegment horizontalLineSegment = new LineSegment(new Vector3(5, Y_OFFSET), new Vector3(15, Y_OFFSET));
+        final Vector3 intersection1 = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(verticalLineSegment, horizontalLineSegment);
+        final Vector3 intersection2 = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(horizontalLineSegment, verticalLineSegment);
 
         assertNotNull(intersection1);
         assertEquals(intersection1, intersection2);
@@ -74,10 +74,10 @@ public class LineIntersectionUtilsTest {
 
     @Test
     void intersectionOf_should_return_null_if_given_a_vertical_and_horizontal_line_which_do_not_cross() {
-        final Line verticalLine = new Line(new Vector3(X_OFFSET, 4), new Vector3(X_OFFSET, 8));
-        final Line horizontalLine = new Line(new Vector3(30, Y_OFFSET), new Vector3(35, Y_OFFSET));
-        final Vector3 intersection1 = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(verticalLine, horizontalLine);
-        final Vector3 intersection2 = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(horizontalLine, verticalLine);
+        final LineSegment verticalLineSegment = new LineSegment(new Vector3(X_OFFSET, 4), new Vector3(X_OFFSET, 8));
+        final LineSegment horizontalLineSegment = new LineSegment(new Vector3(30, Y_OFFSET), new Vector3(35, Y_OFFSET));
+        final Vector3 intersection1 = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(verticalLineSegment, horizontalLineSegment);
+        final Vector3 intersection2 = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(horizontalLineSegment, verticalLineSegment);
 
         assertNull(intersection1);
         assertNull(intersection2);
@@ -88,8 +88,8 @@ public class LineIntersectionUtilsTest {
         // ab contains c in:
         // a -- c -- b -- d
 
-        final Line left = new Line(new Vector3(0, Y_OFFSET), new Vector3(2, Y_OFFSET));
-        final Line right = new Line(new Vector3(1, Y_OFFSET), new Vector3(3, Y_OFFSET));
+        final LineSegment left = new LineSegment(new Vector3(0, Y_OFFSET), new Vector3(2, Y_OFFSET));
+        final LineSegment right = new LineSegment(new Vector3(1, Y_OFFSET), new Vector3(3, Y_OFFSET));
         final Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(left, right);
 
         assertNotNull(intersection);
@@ -102,8 +102,8 @@ public class LineIntersectionUtilsTest {
         // ab contains d in:
         // a -- d -- b -- c
 
-        final Line left = new Line(new Vector3(0, Y_OFFSET), new Vector3(2, Y_OFFSET));
-        final Line right = new Line(new Vector3(3, Y_OFFSET), new Vector3(1, Y_OFFSET));
+        final LineSegment left = new LineSegment(new Vector3(0, Y_OFFSET), new Vector3(2, Y_OFFSET));
+        final LineSegment right = new LineSegment(new Vector3(3, Y_OFFSET), new Vector3(1, Y_OFFSET));
         final Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(left, right);
 
         assertNotNull(intersection);
@@ -117,8 +117,8 @@ public class LineIntersectionUtilsTest {
         // a -- b -- c
 
         final Vector3 b = new Vector3(1, Y_OFFSET);
-        final Line left = new Line(new Vector3(0, Y_OFFSET), b);
-        final Line right = new Line(b, new Vector3(2, Y_OFFSET));
+        final LineSegment left = new LineSegment(new Vector3(0, Y_OFFSET), b);
+        final LineSegment right = new LineSegment(b, new Vector3(2, Y_OFFSET));
         final Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(left, right);
 
         assertNull(intersection);
@@ -129,8 +129,8 @@ public class LineIntersectionUtilsTest {
         // ab and cd got a distance greater than zero
         // a -- b -- c -- d
 
-        final Line left = new Line(new Vector3(0, Y_OFFSET), new Vector3(1, Y_OFFSET));
-        final Line right = new Line(new Vector3(2, Y_OFFSET), new Vector3(3, Y_OFFSET));
+        final LineSegment left = new LineSegment(new Vector3(0, Y_OFFSET), new Vector3(1, Y_OFFSET));
+        final LineSegment right = new LineSegment(new Vector3(2, Y_OFFSET), new Vector3(3, Y_OFFSET));
         final Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(left, right);
         assertNull(intersection);
     }
@@ -146,8 +146,8 @@ public class LineIntersectionUtilsTest {
         // |
         // d
 
-        final Line top = new Line(new Vector3(X_OFFSET, 0), new Vector3(X_OFFSET, 2));
-        final Line bottom = new Line(new Vector3(X_OFFSET, 1), new Vector3(X_OFFSET, 3));
+        final LineSegment top = new LineSegment(new Vector3(X_OFFSET, 0), new Vector3(X_OFFSET, 2));
+        final LineSegment bottom = new LineSegment(new Vector3(X_OFFSET, 1), new Vector3(X_OFFSET, 3));
         final Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(top, bottom);
 
         assertNotNull(intersection);
@@ -166,8 +166,8 @@ public class LineIntersectionUtilsTest {
         // |
         // c
 
-        final Line top = new Line(new Vector3(X_OFFSET, 0), new Vector3(X_OFFSET, 2));
-        final Line bottom = new Line(new Vector3(X_OFFSET, 3), new Vector3(X_OFFSET, 1));
+        final LineSegment top = new LineSegment(new Vector3(X_OFFSET, 0), new Vector3(X_OFFSET, 2));
+        final LineSegment bottom = new LineSegment(new Vector3(X_OFFSET, 3), new Vector3(X_OFFSET, 1));
         final Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(top, bottom);
 
         assertNotNull(intersection);
@@ -184,8 +184,8 @@ public class LineIntersectionUtilsTest {
         // |
         // c
 
-        final Line top = new Line(new Vector3(X_OFFSET, 0), new Vector3(X_OFFSET, 2));
-        final Line bottom = new Line(new Vector3(X_OFFSET, 2), new Vector3(X_OFFSET, 3));
+        final LineSegment top = new LineSegment(new Vector3(X_OFFSET, 0), new Vector3(X_OFFSET, 2));
+        final LineSegment bottom = new LineSegment(new Vector3(X_OFFSET, 2), new Vector3(X_OFFSET, 3));
         final Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(top, bottom);
 
         assertNull(intersection);
@@ -202,8 +202,8 @@ public class LineIntersectionUtilsTest {
         // |
         // d
 
-        final Line top = new Line(new Vector3(X_OFFSET, 0), new Vector3(X_OFFSET, 1));
-        final Line bottom = new Line(new Vector3(X_OFFSET, 2), new Vector3(X_OFFSET, 3));
+        final LineSegment top = new LineSegment(new Vector3(X_OFFSET, 0), new Vector3(X_OFFSET, 1));
+        final LineSegment bottom = new LineSegment(new Vector3(X_OFFSET, 2), new Vector3(X_OFFSET, 3));
         final Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(top, bottom);
 
         assertNull(intersection);

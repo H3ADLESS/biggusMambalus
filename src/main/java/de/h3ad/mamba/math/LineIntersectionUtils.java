@@ -9,74 +9,74 @@ public class LineIntersectionUtils {
      * @return intersection of lines or null
      */
 
-    public static Vector3 intersectionOfHorizontalAndVerticalLines(final Line line1, final Line line2) {
+    public static Vector3 intersectionOfHorizontalAndVerticalLines(final LineSegment lineSegment1, final LineSegment lineSegment2) {
         // horizontal and parallel
-        if (line1.isHorizontal() && line2.isHorizontal()) {
-            return intersectionOfHorizontalLines(line1, line2);
+        if (lineSegment1.isHorizontal() && lineSegment2.isHorizontal()) {
+            return intersectionOfHorizontalLines(lineSegment1, lineSegment2);
         }
 
         // vertical and parallel
-        if (line1.isVertical() && line2.isVertical()) {
-            return intersectionOfVerticalLines(line1, line2);
+        if (lineSegment1.isVertical() && lineSegment2.isVertical()) {
+            return intersectionOfVerticalLines(lineSegment1, lineSegment2);
         }
 
         // perpendicular, line1 is horizontal
-        if (isOnVerticalLine(line1.getV1(), line2) && isOnHorizontalLine(line2.getV1(), line1)) {
-            return new Vector3(line2.getV1().getX(), line1.getV1().getY());
+        if (isOnVerticalLine(lineSegment1.getV1(), lineSegment2) && isOnHorizontalLine(lineSegment2.getV1(), lineSegment1)) {
+            return new Vector3(lineSegment2.getV1().getX(), lineSegment1.getV1().getY());
         }
 
         // perpendicular, line2 is horizontal
-        if (isOnVerticalLine(line2.getV1(), line1) && isOnHorizontalLine(line1.getV1(), line2)) {
-            return new Vector3(line1.getV1().getX(), line2.getV1().getY());
+        if (isOnVerticalLine(lineSegment2.getV1(), lineSegment1) && isOnHorizontalLine(lineSegment1.getV1(), lineSegment2)) {
+            return new Vector3(lineSegment1.getV1().getX(), lineSegment2.getV1().getY());
         }
 
         return null;
     }
 
-    private static Vector3 intersectionOfHorizontalLines(final Line line1, final Line line2) {
-        if (line1.distanceTo(line2) > 0.0) {
+    private static Vector3 intersectionOfHorizontalLines(final LineSegment lineSegment1, final LineSegment lineSegment2) {
+        if (lineSegment1.distanceTo(lineSegment2) > 0.0) {
             return null;
         }
 
-        if (isOnHorizontalLine(line2.getLeftPoint(), line1)) {
-            return line2.getLeftPoint();
+        if (isOnHorizontalLine(lineSegment2.getLeftPoint(), lineSegment1)) {
+            return lineSegment2.getLeftPoint();
         }
 
         return null;
     }
 
     // Returns true, if x is between a and b, AND not a and b
-    private static boolean isOnHorizontalLine(final Vector3 point, final Line line) {
-        if (point.getX() <= line.getLeftPoint().getX()) {
+    private static boolean isOnHorizontalLine(final Vector3 point, final LineSegment lineSegment) {
+        if (point.getX() <= lineSegment.getLeftPoint().getX()) {
             return false;
         }
 
-        if (point.getX() >= line.getRightPoint().getX()) {
+        if (point.getX() >= lineSegment.getRightPoint().getX()) {
             return false;
         }
 
         return true;
     }
 
-    private static Vector3 intersectionOfVerticalLines(final Line line1, final Line line2) {
-        if (line1.distanceTo(line2) > 0.0) {
+    private static Vector3 intersectionOfVerticalLines(final LineSegment lineSegment1, final LineSegment lineSegment2) {
+        if (lineSegment1.distanceTo(lineSegment2) > 0.0) {
             return null;
         }
 
-        if (isOnVerticalLine(line2.getTopPoint(), line1)) {
-            return line2.getTopPoint();
+        if (isOnVerticalLine(lineSegment2.getTopPoint(), lineSegment1)) {
+            return lineSegment2.getTopPoint();
         }
 
         return null;
     }
 
     // Returns true, if x is between a and b, AND not a and b
-    private static boolean isOnVerticalLine(final Vector3 point, final Line line) {
-        if (point.getY() <= line.getTopPoint().getY()) {
+    private static boolean isOnVerticalLine(final Vector3 point, final LineSegment lineSegment) {
+        if (point.getY() <= lineSegment.getTopPoint().getY()) {
             return false;
         }
 
-        if (point.getY() >= line.getBottomPoint().getY()) {
+        if (point.getY() >= lineSegment.getBottomPoint().getY()) {
             return false;
         }
 

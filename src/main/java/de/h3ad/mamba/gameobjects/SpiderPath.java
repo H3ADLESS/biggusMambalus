@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import de.h3ad.mamba.math.Line;
 import de.h3ad.mamba.math.LineIntersectionUtils;
+import de.h3ad.mamba.math.LineSegment;
 import de.h3ad.mamba.math.Vector3;
 
 public class SpiderPath {
@@ -41,9 +41,9 @@ public class SpiderPath {
 
                 if (v2 == newestLineP1) return;
 
-                final Line currentLine = new Line(v1, v2);
-                final Line newLine = new Line(newestLineP1, newestLineP2);
-                Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(currentLine, newLine);
+                final LineSegment currentLineSegment = new LineSegment(v1, v2);
+                final LineSegment newLineSegment = new LineSegment(newestLineP1, newestLineP2);
+                Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(currentLineSegment, newLineSegment);
                 if (intersection != null) {
                     int lastValidWaypoint = path.indexOf(v1);
                     path = path.subList(0, lastValidWaypoint+1);

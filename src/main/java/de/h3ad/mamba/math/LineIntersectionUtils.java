@@ -1,5 +1,9 @@
 package de.h3ad.mamba.math;
 
+import javafx.util.Pair;
+
+import java.util.List;
+
 public class LineIntersectionUtils {
 
     /**
@@ -90,4 +94,19 @@ public class LineIntersectionUtils {
 
         return start < center && center < end;
     }
+
+    /**
+     * Assumes that first and last point of polygon are equal.
+     */
+    public static Pair<Vector3, LineSegment> getIntersection(LineSegment lineSegment, List<Vector3> polygon) {
+        for (int i = 0; i < polygon.size() - 1; i++) {
+            Vector3 intersection =  intersectionOfHorizontalAndVerticalLines(new LineSegment(polygon.get(i), polygon.get(i+1)), lineSegment);
+            if (intersection != null) {
+                return new Pair<>(intersection, new LineSegment(polygon.get(i), polygon.get(i+1)));
+            }
+        }
+        return null;
+    }
+
+
 }

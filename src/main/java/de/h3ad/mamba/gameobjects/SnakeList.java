@@ -22,7 +22,11 @@ public class SnakeList {
         this.bodyLength = 0;
     }
 
+    // TODO: throw exception if new line goes along last lane
     public void addNewPosition(Vector3 position) {
+        if (last.prev != null && last.prev.equals(first) && position.isOnLineSegment(last.position, last.prev.position)) {
+            throw new IllegalArgumentException("Can't add position to snake that lies on last added segment.");
+        }
         SnakeNode secondNode = first.next;
         double addedDistance = position.distance(first.position);
         this.bodyLength = bodyLength + addedDistance;;

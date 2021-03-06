@@ -12,7 +12,7 @@ import static de.h3ad.mamba.gameobjects.Board.*;
 
 public class Snake extends GameObject {
 
-    private final int MAX_SNAKE_LENGTH = 200;
+    private final int MAX_SNAKE_LENGTH = 50;
     private final double SNAKE_WIDTH = 5;
     private final double VELOCITY = 100;
 

@@ -1,6 +1,7 @@
 package de.h3ad.mamba;
 
 import de.h3ad.mamba.gameobjects.Board;
+import de.h3ad.mamba.gameobjects.SafeZone;
 import de.h3ad.mamba.gameobjects.Snake;
 import de.h3ad.mamba.gameobjects.Spider;
 import de.h3ad.mamba.math.Vector3;
@@ -42,6 +43,7 @@ public class Main extends Application {
     private void initGameSetup(final Scene scene, final GraphicsContext graphicsContext) {
         Game g = Game.init(scene, graphicsContext);
         new Board();
+        new SafeZone();
         new Spider();
         new Snake(new Vector3(Board.BOARD_WIDTH/2, Board.BOARD_HEIGHT/2));
         g.start();

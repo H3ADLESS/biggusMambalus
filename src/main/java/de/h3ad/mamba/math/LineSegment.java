@@ -1,5 +1,7 @@
 package de.h3ad.mamba.math;
 
+import javax.sound.sampled.Line;
+
 public class LineSegment {
 
     private final Vector3 v1;
@@ -64,5 +66,19 @@ public class LineSegment {
         }
 
         return 0.0;
+    }
+
+    public boolean containsLineSegment(LineSegment inner) {
+        if (this.isHorizontal() && inner.isHorizontal() && Double.compare(inner.v1.getY(), this.v1.getY()) == 0) {
+            double left = Math.min(this.v1.getX(), this.v2.getX());
+            double right = Math.max(this.v1.getX(), this.v2.getX());
+            return left <= inner.v1.getX() && left <= inner.v2.getX() && right >= inner.v1.getX() && right >= inner.v2.getX();
+        }
+        if (this.isVertical() && inner.isVertical() && Double.compare(inner.v1.getX(), this.v1.getX()) == 0) {
+            double top = Math.min(this.v1.getY(), this.v2.getY());
+            double bot = Math.max(this.v1.getY(), this.v2.getY());
+            return top <= inner.v1.getY() && top <= inner.v2.getY() && bot >= inner.v1.getY() && bot >= inner.v2.getY();
+        }
+        return false;
     }
 }

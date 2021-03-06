@@ -8,6 +8,8 @@ public class Vector3 {
     private final double y;
     private final double z;
 
+    private final double DELTA = 0.000001; // margin used to check doubles for equality
+
     public Vector3() {
         x = 0;
         y = 0;
@@ -53,16 +55,16 @@ public class Vector3 {
     }
 
     public boolean isZero() {
-        return Double.compare(getX(), 0.0) == 0 && Double.compare(getY(), 0.0) == 0 && Double.compare(getZ(), 0.0) == 0;
+        return compareDouble(getX(), 0.0) == 0 && compareDouble(getY(), 0.0) == 0 && compareDouble(getZ(), 0.0) == 0;
     }
 
     @Override
     public boolean equals(final Object o) {
         if (o instanceof Vector3) {
             var other = (Vector3) o;
-            return Double.compare(x, other.getX()) == 0
-                    && Double.compare(y, other.getY()) == 0
-                    && Double.compare(z, other.getZ()) == 0;
+            return compareDouble(x, other.getX()) == 0
+                    && compareDouble(y, other.getY()) == 0
+                    && compareDouble(z, other.getZ()) == 0;
         }
 
         return false;
@@ -76,10 +78,26 @@ public class Vector3 {
      * @param end reference end Vector
      */
     public boolean isOnLine(Vector3 start, Vector3 end) {
-        if (Objects.equals(this.getX(), start.getX()) && Objects.equals(this.getX(), end.getX())) {
+        if (compareDouble(this.getX(), start.getX()) == 0 && compareDouble(this.getX(), end.getX()) == 0) {
             return true;
-        } else if (Objects.equals(this.getY(), start.getY()) && Objects.equals(this.getY(), end.getY())) {
+        } else if (compareDouble(this.getY(), start.getY()) == 0 && compareDouble(this.getY(), end.getY()) == 0) {
             return true;
+        }
+        return false;
+    }
+
+    /**
+     * Checks if this Vector3 is on the line defined by start and end (ignoring z values). Returns true even if it is
+     * not between the reference vectors.
+     *
+     * @param start reference start Vector
+     * @param end reference end Vector
+     */
+    public boolean isOnLineSegment(Vector3 start, Vector3 end) {
+        if (compareDouble(this.getX(), start.getX()) == 0 && compareDouble(this.getX(), end.getX()) == 0) {
+            return start.getY() <= this.getY() && this.getY() <= end.getY();
+        } else if (compareDouble(this.getY(), start.getY()) == 0 && compareDouble(this.getY(), end.getY()) == 0) {
+            return start.getX() <= this.getX() && this.getX() <= end.getX();
         }
         return false;
     }
@@ -93,6 +111,16 @@ public class Vector3 {
         return Math.sqrt(this.squaredDistance(position));
     }
 
+    private int compareDouble(double a, double b) {
+        if (Math.abs(a - b) < DELTA) {
+            return 0;
+        }
+        if (a < b) {
+            return -1;
+        }
+        return 1;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(x, y, z);
@@ -101,4 +129,5 @@ public class Vector3 {
     public String toString() {
         return "(" + this.x + ", " + this.y + ")";
     }
+
 }

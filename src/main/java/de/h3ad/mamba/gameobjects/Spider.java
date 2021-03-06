@@ -3,9 +3,12 @@ package de.h3ad.mamba.gameobjects;
 import de.h3ad.mamba.Direction;
 import de.h3ad.mamba.GameObject;
 import de.h3ad.mamba.Input;
+import de.h3ad.mamba.math.LineIntersectionUtils;
+import de.h3ad.mamba.math.LineSegment;
 import de.h3ad.mamba.math.Vector3;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+import javafx.util.Pair;
 
 import static de.h3ad.mamba.gameobjects.Board.BOARD_HEIGHT;
 import static de.h3ad.mamba.gameobjects.Board.BOARD_LEFT;
@@ -58,27 +61,49 @@ public class Spider extends GameObject {
         Input input = game.getInput();
 
         if (input.isKeyDown(KeyCode.LEFT)) {
-            direction = Direction.LEFT;
+            if (!direction.equals(Direction.RIGHT)) {
+                direction = Direction.LEFT;
+            }
         }
 
         if (input.isKeyDown(KeyCode.RIGHT)) {
-            direction = Direction.RIGHT;
+            if (!direction.equals(Direction.LEFT)) {
+                direction = Direction.RIGHT;
+            }
         }
 
         if (input.isKeyDown(KeyCode.UP)) {
-            direction = Direction.UP;
+            if (!direction.equals(Direction.DOWN)) {
+                direction = Direction.UP;
+            }
         }
 
         if (input.isKeyDown(KeyCode.DOWN)) {
-            direction = Direction.DOWN;
-
+            if (!direction.equals(Direction.UP)) {
+                direction = Direction.DOWN;
+            }
         }
     }
 
     private void move(final Direction direction, final double distance) {
+        SafeZone safeZone = SafeZone.getInstance();
         final Vector3 movement = direction.getVector().multiply(distance);
-        this.position = this.position.add(movement);
+        LineSegment lineSegment = new LineSegment(new Vector3(this.position.getX(), this.position.getY()), this.position.add(movement));
 
+        Pair<Vector3, LineSegment> intersection = LineIntersectionUtils.getIntersection(lineSegment, safeZone.getPolygon());
+
+        // check if inside polygon
+        if (intersection != null && !intersection.getValue().containsLineSegment(lineSegment)) {
+            this.direction = Direction.NONE;
+            this.position = intersection.getKey();
+
+            this.spiderPath = new SpiderPath();
+            this.spiderPath.add(position);
+        } else {
+            this.position = this.position.add(movement);
+        }
+
+        /*
         if (this.position.getX() > BOARD_WIDTH + 1 && this.direction == Direction.RIGHT) {
             this.position = new Vector3(BOARD_LEFT + BOARD_WIDTH, this.position.getY());
             this.direction = Direction.NONE;
@@ -106,7 +131,7 @@ public class Spider extends GameObject {
         if (this.position.getY() <= BOARD_TOP || this.position.getY() >= (BOARD_TOP + BOARD_HEIGHT) || this.position.getX() <= BOARD_LEFT || this.position.getX() >= (BOARD_LEFT + BOARD_WIDTH)) {
             onBorderWalk();
         }
-
+*/
     }
 
     private void onBorderWalk() {

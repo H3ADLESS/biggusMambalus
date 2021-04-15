@@ -10,6 +10,7 @@ import javafx.scene.input.KeyCode;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 public class Game {
@@ -114,10 +115,19 @@ public class Game {
 
                 gameObjects.sort(Comparator.comparingDouble(o -> o.position.getZ()));
 
-                for (GameObject gameObject : gameObjects) {
+                // iterate through game
+                int i = 0;
+                while (gameObjects.size() > i) {
+                    GameObject gameObject = gameObjects.get(i);
                     gameObject.update(deltaTime);
                     gameObject.draw();
+                    i++;
                 }
+
+//                for (GameObject gameObject : gameObjects) {
+//                    gameObject.update(deltaTime);
+//                    gameObject.draw();
+//                }
             }
 
             input.onAfterUpdate();

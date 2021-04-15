@@ -10,6 +10,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
 
+import java.util.List;
+
 import static de.h3ad.mamba.gameobjects.Board.BOARD_HEIGHT;
 import static de.h3ad.mamba.gameobjects.Board.BOARD_LEFT;
 import static de.h3ad.mamba.gameobjects.Board.BOARD_TOP;
@@ -90,17 +92,21 @@ public class Spider extends GameObject {
         final Vector3 movement = direction.getVector().multiply(distance);
         LineSegment lineSegment = new LineSegment(new Vector3(this.position.getX(), this.position.getY()), this.position.add(movement));
 
-        Pair<Vector3, LineSegment> intersection = LineIntersectionUtils.getIntersection(lineSegment, safeZone.getPolygon());
-
         // check if inside polygon
-        if (intersection != null && !intersection.getValue().containsLineSegment(lineSegment)) {
-            this.direction = Direction.NONE;
-            this.position = intersection.getKey();
-
-            this.spiderPath = new SpiderPath();
-            this.spiderPath.add(position);
-        } else {
+        if (LineIntersectionUtils.isInsidePolygon(this.position.add(movement), safeZone.getPolygon())) {
+            System.out.println("move inside");
             this.position = this.position.add(movement);
+        } else {
+            System.out.println("Move not inside polygon");
+            List<Pair<Vector3, LineSegment>> intersections = LineIntersectionUtils.getIntersections(lineSegment, safeZone.getPolygon());
+            if (!intersections.isEmpty() && !intersections.get(0).getValue().containsLineSegment(lineSegment)) {
+                Pair<Vector3, LineSegment> intersection = intersections.get(0);
+                this.direction = Direction.NONE;
+                this.position = intersection.getKey();
+
+                this.spiderPath = new SpiderPath();
+                this.spiderPath.add(position);
+            }
         }
 
         /*

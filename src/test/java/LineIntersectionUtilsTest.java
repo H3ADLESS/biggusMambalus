@@ -3,6 +3,15 @@ import org.junit.jupiter.api.Test;
 import de.h3ad.mamba.math.LineIntersectionUtils;
 import de.h3ad.mamba.math.LineSegment;
 import de.h3ad.mamba.math.Vector3;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -59,10 +68,23 @@ public class LineIntersectionUtilsTest {
         assertFalse(LineIntersectionUtils.isBetween(center, a, b));
     }
 
+    @ParameterizedTest
+    @MethodSource("createWordsWithLength")
+    void test(String testString, int length) {
+        assertEquals(testString.length(), length);
+    }
+
+    private static Stream<Arguments> createWordsWithLength() {
+        return Stream.of(
+                Arguments.of("Hello", 5),
+                Arguments.of("Fun", 3)
+        );
+    }
+
     @Test
     void intersectionOf_should_return_a_vector_if_given_a_vertical_and_horizontal_line() {
-        final LineSegment verticalLineSegment = new LineSegment(new Vector3(X_OFFSET, 12), new Vector3(X_OFFSET, 20));
-        final LineSegment horizontalLineSegment = new LineSegment(new Vector3(5, Y_OFFSET), new Vector3(15, Y_OFFSET));
+        final LineSegment verticalLineSegment = new LineSegment(new Vector3(10, 12), new Vector3(10, 20));
+        final LineSegment horizontalLineSegment = new LineSegment(new Vector3(5, 15), new Vector3(15, 15));
         final Vector3 intersection1 = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(verticalLineSegment, horizontalLineSegment);
         final Vector3 intersection2 = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(horizontalLineSegment, verticalLineSegment);
 
@@ -207,6 +229,39 @@ public class LineIntersectionUtilsTest {
         final Vector3 intersection = LineIntersectionUtils.intersectionOfHorizontalAndVerticalLines(top, bottom);
 
         assertNull(intersection);
+    }
+
+    @Test
+    void testIsOnPolygonEdge() {
+        List<Vector3> polygon = new ArrayList<>();
+        polygon.add(new Vector3(0,0));
+        polygon.add(new Vector3(0,1));
+        polygon.add(new Vector3(1,1));
+        polygon.add(new Vector3(1,0));
+        polygon.add(new Vector3(0,0));
+
+        Vector3 point = new Vector3(4, 2);
+
+        assertFalse(LineIntersectionUtils.isOnPolygonEdge(new Vector3(4, 2), polygon));
+        assertFalse(LineIntersectionUtils.isOnPolygonEdge(new Vector3(-0.000001, 0.5), polygon));
+        assertFalse(LineIntersectionUtils.isOnPolygonEdge(new Vector3(1, 1.0001), polygon));
+
+        assertTrue(LineIntersectionUtils.isOnPolygonEdge(new Vector3(1, 1), polygon));
+    }
+
+    @Test
+    void testIsInsidePolygon() {
+        List<Vector3> polygon = new ArrayList<>();
+        polygon.add(new Vector3(5.0,5.0));
+        polygon.add(new Vector3(795.0,5.0));
+        polygon.add(new Vector3(795.0,595.0));
+        polygon.add(new Vector3(5.0,595.0));
+        polygon.add(new Vector3(5.0,5.0));
+        Vector3 movement = new Vector3(0.0, 31.98143999907188);
+        Vector3 position = new Vector3(772.1940699976403, 5.0);
+
+        assertTrue(LineIntersectionUtils.isInsidePolygon(position.add(movement), polygon));
+
     }
 
 }

@@ -8,7 +8,7 @@ public class Vector3 {
     private final double y;
     private final double z;
 
-    private final double DELTA = 0.000001; // margin used to check doubles for equality
+    private static final double DELTA = 0.000001; // margin used to check doubles for equality
 
     public Vector3() {
         x = 0;
@@ -111,7 +111,7 @@ public class Vector3 {
         return Math.sqrt(this.squaredDistance(position));
     }
 
-    private int compareDouble(double a, double b) {
+    public static int compareDouble(double a, double b) {
         if (Math.abs(a - b) < DELTA) {
             return 0;
         }

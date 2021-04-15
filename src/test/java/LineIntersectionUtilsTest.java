@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import de.h3ad.mamba.math.LineIntersectionUtils;
@@ -10,6 +11,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -262,6 +264,37 @@ public class LineIntersectionUtilsTest {
 
         assertTrue(LineIntersectionUtils.isInsidePolygon(position.add(movement), polygon));
 
+    }
+
+    @Test
+    void perpendicularLinesAreNextToEachOther() {
+        LineSegment horizontal = new LineSegment(new Vector3(0, 50), new Vector3(100,50));
+        LineSegment vertical = new LineSegment(new Vector3(150, 0), new Vector3(150,100));
+
+        Vector3 intersection = LineIntersectionUtils.intersectionOfPerpendicularLines(horizontal, vertical);
+
+        Assertions.assertNull(intersection);
+    }
+
+    @Test
+    void perpendicularLinesAreOneAboveTheOther() {
+        LineSegment horizontal = new LineSegment(new Vector3(0, 50), new Vector3(100,50));
+        LineSegment vertical = new LineSegment(new Vector3(50, 60), new Vector3(50,100));
+
+        Vector3 intersection = LineIntersectionUtils.intersectionOfPerpendicularLines(horizontal, vertical);
+
+        Assertions.assertNull(intersection);
+    }
+
+    @Test
+    void perpendicularLinesCross() {
+        LineSegment horizontal = new LineSegment(new Vector3(0, 50), new Vector3(100,50));
+        LineSegment vertical = new LineSegment(new Vector3(50, 0), new Vector3(50,100));
+
+        Vector3 intersection = LineIntersectionUtils.intersectionOfPerpendicularLines(horizontal, vertical);
+
+        Assertions.assertNotNull(intersection);
+        Assertions.assertEquals(new Vector3(50, 50), intersection);
     }
 
 }

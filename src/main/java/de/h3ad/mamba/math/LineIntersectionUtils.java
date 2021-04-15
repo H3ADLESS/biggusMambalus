@@ -9,11 +9,10 @@ public class LineIntersectionUtils {
 
     /**
      * Lines must be horizontal or vertical! Point that is shared as end and start point is not treated as intersection.
-     * @params line1 oldest line
-     * @params line2 newest line
+     * @param lineSegment1 oldest line
+     * @param lineSegment2 newest line
      * @return intersection of lines or null
      */
-
     public static Vector3 intersectionOfHorizontalAndVerticalLines(final LineSegment lineSegment1, final LineSegment lineSegment2) {
         // horizontal and parallel
         if (lineSegment1.isHorizontal() && lineSegment2.isHorizontal()) {
@@ -25,17 +24,8 @@ public class LineIntersectionUtils {
             return intersectionOfVerticalLines(lineSegment1, lineSegment2);
         }
 
-        // perpendicular, line1 is horizontal
-        if (isOnVerticalLine(lineSegment1.getV1(), lineSegment2) && isOnHorizontalLine(lineSegment2.getV1(), lineSegment1)) {
-            return new Vector3(lineSegment2.getV1().getX(), lineSegment1.getV1().getY());
-        }
-
-        // perpendicular, line2 is horizontal
-        if (isOnVerticalLine(lineSegment2.getV1(), lineSegment1) && isOnHorizontalLine(lineSegment1.getV1(), lineSegment2)) {
-            return new Vector3(lineSegment1.getV1().getX(), lineSegment2.getV1().getY());
-        }
-
-        return null;
+        // perpendicular lines
+        return intersectionOfPerpendicularLines(lineSegment1, lineSegment2);
     }
 
     private static Vector3 intersectionOfHorizontalLines(final LineSegment lineSegment1, final LineSegment lineSegment2) {
@@ -45,6 +35,27 @@ public class LineIntersectionUtils {
 
         if (isOnHorizontalLine(lineSegment2.getLeftPoint(), lineSegment1)) {
             return lineSegment2.getLeftPoint();
+        }
+
+        return null;
+    }
+
+    public static Vector3 intersectionOfPerpendicularLines(final LineSegment lineSegment1, final LineSegment lineSegment2) {
+        LineSegment horizontal;
+        LineSegment vertical;
+
+        if (lineSegment1.isHorizontal()) {
+            horizontal = lineSegment1;
+            vertical = lineSegment2;
+        } else {
+            horizontal = lineSegment2;
+            vertical = lineSegment1;
+        }
+
+        if (isBetween(vertical.getV1().getX(), horizontal.getV1().getX(), horizontal.getV2().getX())) {
+            if (isBetween(horizontal.getV1().getY(), vertical.getV1().getY(), vertical.getV2().getY())) {
+                return new Vector3(vertical.getV1().getX(), horizontal.getV1().getY());
+            }
         }
 
         return null;

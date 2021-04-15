@@ -115,7 +115,7 @@ public class Game {
 
                 gameObjects.sort(Comparator.comparingDouble(o -> o.position.getZ()));
 
-                // iterate through game
+                // iterate through game objects, ignore potential skip of single game objects
                 int i = 0;
                 while (gameObjects.size() > i) {
                     GameObject gameObject = gameObjects.get(i);
